@@ -1,0 +1,50 @@
+<style>
+.correct-answer {
+
+}
+.wrong-answer {
+  color: red;
+}
+#audio_player {
+  display: none;
+}
+.score {
+  display: none;
+}
+</style>
+<%= javascript_include_tag "/javascripts/jwplayer.js" %>
+<%= javascript_include_tag "/javascripts/jwplayer.html5.js" %>
+<div id="audio_player" style="display:none">Loading the player...</div>
+<div class="page-header">
+  <h1>第 <%= @day %> 天的進度 <small>測驗結果</small></h1>
+</div>
+<div class="score"><%= @score %></div>
+<p class="alert alert-info">
+  下列紅字部分為錯誤的答案
+</p>
+
+
+
+<ol>
+  <% i = 0 %>
+  <% @course_items.each do |item| %>
+  <% i = i + 1 %>
+  <li>
+    <dl class="course_item course_item_<%= i %>">
+      <dt class="<%= @results[item.id][:wrong?] ? 'wrong-answer' : 'correct-answer' %>"><%= @results[item.id][:content] %></dt>
+      <dt class="answer" style="display:none"><%= item.question %></dt>
+      <dd data-audio-url="<%= item.file_path %>"><%= item.answer %></dd>
+    </dl>
+  </li>
+  <% end %>
+</ol>
+<button class="btn btn-primary show-answer" >顯示正確答案</button>
+<%= render "links" %>
+
+<script>
+$(document).ready(function(){
+  $('.show-answer').click(function(ev){
+    $('dt.answer').toggle();
+  });
+});
+</script>

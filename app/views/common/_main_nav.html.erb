@@ -1,0 +1,34 @@
+  <ul class="nav nav-pills">
+    <li class="<%= 'active' if controller.controller_name == 'home' %>"><%= link_to t("首頁"), '/' %></li>
+    <li class="<%= 'active' if controller.controller_name == 'news' %>"><%= link_to "重要訊息", news_index_path %></li>
+    <li class="<%= 'active' if controller.controller_name == 'courses' %>"><%= link_to "課程清單", courses_path %></li>
+    <li class="<%= 'active' if @current_section == 'pages_one_on_one' %>"><%= link_to "一對一課程", "/pages/one_on_one" %></li>
+    <li class="<%= 'active' if @current_section == 'pages_faq' %>"><%= link_to "常見問答 (FAQ)", "/pages/faq" %></li>
+    <li class="<%= 'active' if @current_section == 'pages_contact_us' %>"><%= link_to "聯絡我們", "/pages/contact_us" %></li>
+
+    <% if user_signed_in? %>
+    <li class="<%= 'active' if controller.controller_name == 'studies' %>"><%= link_to "上課去", studies_path, :style => 'color:red;' %></li>
+    <li class="dropdown <%= 'active' if @current_section == 'account' %>">
+      <%= link_to "#", :class => "dropdown-toggle", :data => {:toggle => "dropdown"} do %>
+        我的帳戶<b class="caret"></b>
+      <% end %>
+      <ul class="dropdown-menu">
+        <!-- links -->
+
+        <li class="block-1"><%= link_to "購物車", cart_path %></li>
+        <li class="block-1"><%= link_to "歷史訂單", user_orders_path %></li>
+        <li class="block-1"><%= link_to "選開課日", set_start_day_path %></li>
+         
+        <li class="block-2"><%= link_to "易錯排行榜", hardests_study_path('all') %></li>
+        <li class="block-2"><%= link_to "學習記錄", records_study_path('all') %></li>
+         
+        <li class="block-3"><%= link_to "自我學習", study_self_learnings_path %></li>
+ 
+        <li class="block-4"><%= link_to "個人訊息", inbox_path %></li>
+        <li class="block-4"><%= link_to "個人資料", profile_path %></li>
+        
+      </ul>
+    </li>
+    <% end %>
+
+  </ul>

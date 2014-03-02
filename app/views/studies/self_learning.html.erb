@@ -1,0 +1,37 @@
+自我學習：    新增單字(英文+中文)        查詢所有新增的英文單字     測驗   
+
+<h2>單字學習</h2>
+<p>
+此功能開放給本網站的付費學習費員，請新增您想要記憶的英文單字、詞性與中文翻譯。
+(每一次需新增20 組單字)
+您可以使用本區來練習您所新增的單字。
+</p>
+<p>您目前完成的內容如下</p>
+<!--
+<p>如要新增單字群組，請按 <%= link_to "新增單字(英文+中文)", self_learning_new_path, :class => "btn" %></p>
+<p>如要查詢所新增的內容，請點選 <%= link_to "查詢內容", "#", :class => "btn" %></p>
+<p>如要測驗對某單元的熟練度，請點選 <%= link_to "測驗", "#", :class => "btn" %></p>
+-->
+<h3 class="text-center">所有新增的英文單字</h3>
+<table class="table table-striped">
+  <tr>
+    <th>日期</th>
+    <th>建檔編號</th>
+    <th>查詢內容</th>
+    <th>測驗</th>
+    <th>刪除</th>
+  </tr>
+  <% @self_learnings.each do |lrn| %>
+  <tr>
+    <td><%= lrn.created_at %></td>
+    <td><%= lrn.serial %></td>
+    <td><%= link_to "查詢內容", self_learning_path(lrn.grouping_id) %></td>
+    <td><%= link_to "測驗", self_learning_path(lrn.grouping_id) %></td>
+    <td><%= link_to "刪除", self_learning_path(lrn.grouping_id), :method => 'delete', :class => 'delete danger', :data => {:confirm => '確定要刪除此記錄嗎？', :disable_with => '...'} %></td>
+  </tr>
+  <% end %>
+</table>
+<%= link_to "新增單字(英文+中文)", self_learning_new_path, :class => "btn" %>
+
+
+

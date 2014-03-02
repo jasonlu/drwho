@@ -1,0 +1,24 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Url:</strong>
+  <%= @click_record.url %>
+</p>
+
+<p>
+  <strong>From:</strong>
+  <%= @click_record.from %>
+</p>
+
+<p>
+  <strong>Ad:</strong>
+  <%= @click_record.ad_id %>
+</p>
+
+<p>
+  <strong>Referer:</strong>
+  <%= @click_record.referer %>
+</p>
+
+<%= link_to 'Edit', edit_click_record_path(@click_record) %> |
+<%= link_to 'Back', click_records_path %>

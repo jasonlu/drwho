@@ -1,0 +1,57 @@
+<h2>測驗結果</h2>
+<p>紅色框線以及文字表示錯誤的回答，請將滑鼠游標置於其上以顯示正確答案</p>
+<p>正確率： <%= @correct_count %>/<%= @learnings.length %> = <span class="score"><%= @correct_percentage * 100 %>%</span></p>
+
+<table class="table">
+  <tr class="">
+    <th class="span1"></th>
+    <th class="span4">英文</th>
+    <th>詞性</th>
+    <th class="span4">中文</th>
+  </tr>
+  <% number = 0 %>
+  <% @learnings.each do |lrn| %>
+  <% number = number + 1 %>
+  <tr class="">
+    <td class="span1"><%= number %></td>
+    <td class="span4"><%= lrn.original %></td>
+    <td><%= lrn.word_type %></td>
+    <td class="span4">
+      
+      <%= text_field_tag "answers[#{lrn.id.to_s}][text]", @answers[lrn.id.to_s].text, :class => "#{@answers[lrn.id.to_s].is_correct ? "correct" : "wrong" } input" %>
+      <%= hidden_field_tag "answers[#{lrn.id.to_s}][id]", lrn.id %>
+      <%= hidden_field_tag "right_answer[#{lrn.id.to_s}]", lrn.translation %>
+      
+    </td>
+  </tr>
+  <% end %>
+</table>
+<%= render "link_back" %>
+<%= render "link_forward_to_exam" %>
+
+<div class="answer-panel" style="display:none; border: 1px solid #ccc; box-sizing: border-box; padding: 30px; background: #eee; position: absolute; left: 0; top: 0;">
+  <span class="value" style="text-align:center; display: table-cell; vertical-align: middle">
+    
+  </span>
+</div>
+<script>
+
+  $(document).ready(function(){
+    $(".answer-panel").appendTo("body");
+    $("input.wrong").mouseenter(function(){
+      val = $(this).siblings("input[id^=right_answer]").val();
+      cssObj = {
+        width: $(this).outerWidth(),
+        left: $(this).offset().left,
+        top: $(this).offset().top + $(this).height() + 20,
+        "border-radius": "5px"
+      };
+      $(".answer-panel").css(cssObj).finish().slideDown(300).find("span.value").text(val);
+    });
+    $("input.wrong").mouseleave(function(){
+      $(".answer-panel").css(cssObj).slideUp(200)
+    });
+  });
+
+
+</script>

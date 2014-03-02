@@ -1,0 +1,26 @@
+<h1>易錯排行榜</h1>
+<h2>單一課程易錯排行榜</h2>
+
+<table class="table table-striped">
+  <tr class="row">
+    <th class="span2">課程分類</th>
+    <th >課程名稱</th>
+    <th class="span1">單元數</th>
+    <th class="span2">課程編號</th>
+    <th class="span2">測驗錯誤次數</th>
+    <th class="span2">易錯排行榜</th>
+    
+  </tr>
+  <% @records.each do |record| %>
+  <% study_id = record.study_id %>
+  <tr class="row">
+    <td class=""><%= record.course.category.title %></td>
+    <td class=""><%= record.course.title %></td>
+    <td class=""><%= record.course.duration_days %></td>
+    <td class=""><%= record.course.serial %></td>
+    <td class="span2"><%= record.cnt %></td>
+    <td class="span2"><%= link_to '易錯排行榜', '#' %></td>
+    
+  </tr>
+  <% end %>
+</table>

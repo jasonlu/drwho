@@ -1,0 +1,106 @@
+@import 'variables.css.scss';
+
+.studies-block {
+  dl {
+  margin: 0;
+  margin-bottom: 2em;
+  }
+  #study_block {
+    position: relative;
+    overflow: hidden;
+  }
+  .course_item {
+    /* margin-bottom: 300px; */
+    /* display: none; */
+  }
+  #audio_player {
+    display: none;
+  }
+
+
+  td, th {
+    vertical-align: middle !important;
+  }
+  td.nopadding {
+    padding: 0;
+  }
+  td.status, td.day, .table-study td {
+    text-align: center;
+  }
+  tr.ahead .status {
+    color: darkgreen;
+  }
+
+  tr.behind .status {
+    color: red;
+  }
+  .light-blue-bg {
+    background: lightblue !important;
+  }
+  .table-study table {
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .table-study td{
+    box-sizing: border-box;
+  }
+  .table-study>tbody>tr>td.day {
+    width: 80px;
+  }
+  .table-study>tbody>tr>td.suggested-day {
+    width: 80px;
+  }
+
+  .table-study>tbody>tr>td.status {
+    width: 60px;
+  }
+  .table-study>tbody>tr>td.read {
+    width: 80px;
+  }
+  .table-study>tbody>tr>td.practice {
+    width: 200px;
+  }
+  .table-study>tbody>tr>td.exam {
+  }
+  .table-study>tbody>tr>td.exam td.exam-date {
+    width: 80px;
+  }
+  .table-study>tbody>tr>td.exam tr.alpha>td {
+    border-bottom: 1px solid #ccc;
+  }
+  .table-study>tbody>tr>td.exam td.exam-result {
+    vertical-align: top !important;
+  }
+
+  .table-study table.practice td {
+    width: 28%;
+  }
+
+
+
+  .table-study table.exam td {
+    width: 16.6%;
+  }
+
+  .table-study table td {
+    background-color: inherit !important;
+    border: none;
+    vertical-align: middle;
+    text-align: center;
+
+  }
+}
+
+.self_learnings-block {
+  input.wrong {
+    border-color: $danger;
+  }
+
+  input.correct {
+    border-color: $safe;
+  }
+  .score {
+    color: $danger;
+  }
+}

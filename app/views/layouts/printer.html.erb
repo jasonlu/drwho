@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta name="keywords" content="<%= @config[:keywords]%>">
+  <meta name="description" content="<%= @config[:description]%>"/>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title><%= @config[:title]%></title>
+  <%= stylesheet_link_tag    "application", :media => "all" %>
+  <%= stylesheet_link_tag    "/stylesheets/bootstrap.min", :media => "all" %>
+  <%= stylesheet_link_tag    "/stylesheets/custom-theme/jquery-ui-1.10.0.custom.css", :media => "all" %>
+  
+  <%= javascript_include_tag "application" %>
+  
+  
+  <%= javascript_include_tag "/js/bootstrap.min" %>
+  <%= javascript_include_tag "/javascripts/init.js" %>
+  <%= javascript_include_tag params[:controller] %>
+  <%= csrf_meta_tags %>
+  <% unless @sorting_class.blank? %>
+  <meta name="sorting" content="<%= @sorting_class %>" >
+  <% end %>
+</head>
+<body>
+  <div class="container center div14">
+    <header>
+      <div class="row">
+        <span class="span6">
+          <h1 class="site_title"><%= image_tag "/img/logo.jpg", height: "100", class: "logo" %><%= @config[:sitename]%></h1>
+        </span>
+        <div class="pull-right">
+          <h2 class="site-url"><%= "#{request.host_with_port}" %></h2>
+          <ul class="manifest">
+            <li>購物單編號：<%= @order_number  %> </li>
+            <li>購物單日期：<%= Date.today %></li>
+          </ul>
+        </div>
+      </div>
+    </header>
+    <hr>
+    <div class="row" style="margin-bottom:20px;">
+      <section id="main-content" class="span12" style="">
+        <%= yield %>
+      </section>
+    </div>
+
+    <footer style="position: fixed; bottom:0;" class="div14">列印時間：<%= Time.now %></footer>
+  </div>
+</body>
+</html>

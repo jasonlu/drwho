@@ -1,0 +1,44 @@
+
+<dl class="dl-horizontal">
+  <dt><%= t('姓名') %></dt>
+  
+  <dd><%= @user.user_profile.lastname %> <%= @user.user_profile.firstname %></dd>
+  
+  <dt><%= t('會員編號') %></dt>
+  
+  <dd><%= @user.serial_id %></dd>
+  
+</dl>
+<hr>
+<table class="table table-striped">
+  <tr>
+    <th><%= t('課程分類') %></th>
+    <th><%= t('課程名稱') %></th>
+    <th><%= t('單元數') %></th>
+    <th><%= t('課程編號') %></th>
+    <th><%= t('上課時間長度') %></th>
+    <th><%= t('售價') %></th>
+  </tr>
+  <%
+  total_price = 0
+  @courses.each do |course|
+    %>
+    <tr>
+      <td><%= course.category.title %></td>
+      <td><%= course.title %></td>
+      <td><%= course.unit %></td>
+      <td><%= course.serial %></td>
+      <td><%= course.duration_days %> <%= t('天') %></td>
+      <td><%= number_to_currency(course.price, :precision => 0, :locale => :zh_tw) %></td>
+    </tr>
+    <%
+    total_price += course.price
+  end
+  %>
+  <tr>
+    <td colspan="4"><%= t('購物單金額') %></td>
+    <td><%= t('小計') %></td>
+    <td><%= number_to_currency(total_price, :precision => 0, :locale => :zh_tw) %></td>
+  </tr>
+</table>
+<%= render 'form' %>

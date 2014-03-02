@@ -1,0 +1,17 @@
+<table class="table table-striped">
+  <tr>
+    <th class="span2"><%= t('主旨') %></th>
+    <th><%= t('預覽') %></th>
+    <th class="span2"><%= t('發送時間') %></th>
+  </tr>
+  <% @inboxes.each do |inbox| %>
+    <% next if inbox.message.nil? %>
+  <% tr_class = inbox.read? ? 'read' : 'unread' %>
+  
+  <tr data-inbox-id="<%= inbox.id %>" class="<%= tr_class %>">
+    <td class="span2"><%= link_to inbox.message.subject, inbox_show_path(inbox) %></td>
+    <td><%= link_to strip_tags(inbox.message.content)[0..100] + '...', inbox_show_path(inbox) %></td>
+    <td class="span2"><%= time_ago_in_words(inbox.message.created_at) + '前' %></td>
+  </tr>
+  <% end %>
+</table>

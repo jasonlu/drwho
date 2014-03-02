@@ -1,0 +1,30 @@
+<link rel="stylesheet" href="/assets/study.css">
+<script src="/javascripts/audio-player.js"></script>
+<div id="audio_player">Loading the player...</div>
+
+<div class="page-header">
+  <h1>第 <%= @day %> 天的進度 <small><%= @type == 'exam' ? '測驗' : '練習' %><%= (@phase + 1).to_chinese %></small></h1>
+</div>
+
+<p class="alert alert-info">
+  請依照中文意思並聆聽錄音檔，填寫英文內容
+</p>
+
+
+<%= form_tag(controller: "studies", action: @action_target, day: @day, phase: @phase) do %>
+<ol>
+  <% i = 0 %>
+  <% @course_items.each do |item| %>
+  <% i = i + 1 %>
+  <li class="row">
+    <dl class="course_item course_item_<%= i %> span10">
+      <dt><input type="text" class="span10" value="" autocomplete="off" placeholder="Input..." name="course_items[<%= item.id %>]"></dt>
+      <dd data-audio-url="<%= item.file_path %>"><%= item.answer %></dd>
+    </dl>
+    <a class="btn btn-play pull-right span1" data-audio-url="<%= item.file_path %>"><i class="icon-headphones"></i> 播放</a>
+  </li>
+  <% end %>
+</ol>
+<button type="submit" class="btn btn-primary" >送出</button>
+<%= render "links" %>
+<% end %>

@@ -1,0 +1,25 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Sitename:</b>
+  <%= @site_config.sitename %>
+</p>
+
+<p>
+  <b>Description:</b>
+  <%= @site_config.description %>
+</p>
+
+<p>
+  <b>Keywords:</b>
+  <%= @site_config.keywords %>
+</p>
+
+<p>
+  <b>Copyright:</b>
+  <%= @site_config.copyright %>
+</p>
+
+
+<%= link_to 'Edit', edit_site_config_path(@site_config) %> |
+<%= link_to 'Back', site_configs_path %>

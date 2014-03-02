@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  content: MyText
+  weight: 1
+  link: MyString
+  counter: 1
+  location: 1
+
+two:
+  content: MyText
+  weight: 1
+  link: MyString
+  counter: 1
+  location: 1

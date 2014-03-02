@@ -1,0 +1,48 @@
+<%= form_tag url_for(:controller => 'site_configs', :action => 'update'), :method => 'patch', :class => 'form-horizontal' do %>
+  <!-- <input type="hidden" value="patch" name="_method"> -->
+  <!-- <input name="authenticity_token" type="hidden" value="<%= form_authenticity_token %>" /> -->
+  <div class="control-group">
+    <label class="control-label" for="sitename">網站名稱</label>
+    <div class="controls">
+      <input class="span4" type="text" id="sitename" name="sitename" placeholder="網站名稱" value="<%= @config[:sitename] %>">
+    </div>
+  </div>
+  <div class="control-group">
+    <label class="control-label" for="copyright">版權宣告</label>
+    <div class="controls">
+      <input class="span4" type="text" id="copyright" name="copyright" placeholder="版權宣告" value="<%= @config[:copyright] %>">
+    </div>
+  </div>
+  <div class="control-group">
+    <label class="control-label" for="keywords">SEO Keywords</label>
+    <div class="controls">
+      <input class="span4" type="text" id="keywords" name="keywords" placeholder="Keywords" value="<%= @config[:keywords] %>">
+    </div>
+  </div>
+  <div class="control-group">
+    <label class="control-label" for="title">SEO Title</label>
+    <div class="controls">
+      <input class="span4" type="text" id="title" name="title" placeholder="Title" value="<%= @config[:title] %>">
+    </div>
+  </div>
+ 
+  <div class="control-group">
+    <label class="control-label" for="description">SEO Description</label>
+    <div class="controls">
+      <textarea class="span4" id="description" name="description" placeholder="SEO Description"><%= @config[:description] %></textarea>
+    </div>
+  </div>
+  <div class="control-group">
+    <label class="control-label" for="pay_instruction">付款說明</label>
+    <div class="controls">
+      <textarea class="ckeditor" id="pay_instruction" name="pay_instruction" placeholder="付款說明"><%= @config[:pay_instruction] %></textarea>
+    </div>
+  </div>
+  <div class="control-group">
+    <div class="controls">
+      
+      <button type="submit" class="btn btn-primary">儲存</button>
+    </div>
+  </div>
+<% end %>
+<!-- </form>-->

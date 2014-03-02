@@ -1,0 +1,4 @@
+<div class="page-header">
+<h1><%= @message.subject %><small><%= time_ago_in_words(@message.created_at) + '前' %></small></h1>
+</div>
+<p><%= simple_format(@message.content) %></p>

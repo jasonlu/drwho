@@ -1,0 +1,32 @@
+<table class="table table-striped">
+  <tr class="sortable">
+    <th class="span category" data-sorting="category">課程類別</th>
+    <th class="span title" data-sorting="title">課程名稱</th>
+    <th class="span unit" data-sorting="unit">課程單元</th>
+    <th class="span serial" data-sorting="serial">課程編號</th>
+    <th class="span starts-at" data-sorting="starts-at">開始上課日期</th>
+    <th class="span ends-at" data-sorting="ends-at">結束上課日期</th>
+    <th class="span" >上課去</th>
+    <th class="span" >期末考成績</th>
+    <th class="span" >通關</th>
+    <th class="span" >易錯排行榜</th>
+    <th class="span" >學習紀錄</th>
+  </tr>
+
+<% @studies.each do |study| %>
+  <tr>
+    <td><%= study.course.category.title %></td>
+    <td><%= study.course.title %></td>
+    <td><%= study.course.unit %></td>
+    <td><%= study.course.serial %></td>
+    <td><%= study.starts_at %></td>
+    <td><%= study.ends_at %></td>
+    <td><%= link_to '上課', study %></td>
+    <td><%= study.score %></td>
+    <td><%= study.passed %></td>
+    <td><%= link_to '易錯排行榜', hardests_study_path(:id => study.id) %></td>
+    <td><%= link_to '學習紀錄', records_study_path(study) %></td>
+    
+  </tr>
+<% end %>
+</table>

@@ -1,0 +1,14 @@
+<h2><%= @course.title %></h2>
+<p>
+  <b>售價:</b>
+  <%= @course.price.to_i %>
+</p>
+<p>
+  <b>課程長度:</b>
+  <%= @course.duration_days %> 天
+</p>
+<p>
+  <%= @course.description.html_safe %>
+</p>
+
+

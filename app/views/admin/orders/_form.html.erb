@@ -1,0 +1,23 @@
+<%= form_for [:admin, @admin_order] do |f| %>
+<legend>訂單編號：<%= @admin_order.order_number %></legend>
+<fieldset>
+    
+    <%= f.label :payment_price, '金額' %>
+    <%= f.number_field :payment_price %>
+    <%= f.label :payment_status, :class => 'checkbox' do %>
+        <%= f.check_box :payment_status %> 已付款
+    <% end %>
+   <%= f.label :note, '備註' %>
+    <%= f.text_area :note %>
+    
+    
+
+    
+  </fieldset>
+  <div class="form-actions">
+    <%= link_to "取消", admin_orders_path, :class => 'btn btn-info', :data => {:disable_with => "Please wait..." } %>
+
+    <%= f.submit :class => 'btn btn-primary', :data => { :method => "put", :disable_with => "Saving..." }, :value => '儲存' %>
+  </div>
+  
+<% end %>

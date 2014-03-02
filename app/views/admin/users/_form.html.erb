@@ -1,0 +1,52 @@
+<%= form_for [:admin, @admin_user] do |f| %>
+  <fieldset>
+    <%= label :email, 'email' %>
+    <%= f.text_field :email %>
+    <%= label :password, '密碼' %>
+    <%= f.password_field :password %>
+    <span class="help-block">Leave blank if not intend to change password</span>
+
+    <%= f.fields_for :user_profile do |p| %>
+      <%= label :firstname, '姓' %>
+      <%= p.text_field :lastname %>
+
+      <%= label :firstname, '名' %>
+      <%= p.text_field :firstname %>
+
+      <%= label :id_number, 'ID Number' %>
+      <%= p.text_field :id_number %>
+
+      <%= label :dob, '出生日期' %>
+      <%= p.date_field :dob %>
+
+      <%= label :gender, '性別' %>
+      <%= p.select :gender, [['女性', 0], ['男性', 1]] %>
+      
+      <%= label :education, '教育程度' %>
+      <%= p.select :education, ['研究所', '大學', '高中職', '國中', '小學'] %>
+
+      <%= label :country, '國籍' %>
+      <%= p.country_select :country, nil, :iso_codes => true %>
+
+      <%= label :register_address, '戶籍地址' %>
+      <%= p.text_field :register_address %>
+
+      <%= label :address, '聯絡地址' %>
+      <%= p.text_field :address %>
+    <% end %>
+
+    <% for role in User::ROLES %>
+      
+      <%= label_tag "user_roles_#{role}", :class => 'checkbox' do %>
+        <%= check_box_tag "user[roles][#{role}]", role, @admin_user.roles.include?(role), {:name => "user[roles][]"}%> <%= role.humanize %>
+      <% end %>
+
+    <% end %>
+    <%= hidden_field_tag "user[roles][]", "" %>
+    
+   
+  </fieldset>
+  <div class="form-actions">
+    <%= f.submit :class => 'btn btn-primary', :data => { :method => "put", :disable_with => "Saving..." } %>
+  </div>
+<% end %>

@@ -1,0 +1,43 @@
+<table class="table table-striped">
+  <thead>
+    <tr class="sortable">
+      <th class="title" data-sorting="title">標題</th>
+      <th class="span3 created-at" data-sorting="created-at">建立於</th>
+      <th class="span3 updated-at" data-sorting="updated-at">最後更新</th>
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @admin_news.each do |admin_news| %>
+      <tr>
+        <td><%= admin_news.title %></td>
+        <td><%= admin_news.created_at.localtime %></td>
+        <td><%= admin_news.updated_at.localtime %></td>
+        
+        <td>
+
+
+        <%= link_to edit_admin_news_path(admin_news), :title => '編輯', :class => 'btn btn-mini' do %>
+        <i class="icon-edit"></i>
+        <% end %>
+        <%= link_to admin_news_path(admin_news.id), method: :delete, :title => '刪除', :class => 'btn btn-mini btn-danger', data: { confirm: 'Are you sure?' } do %>
+        <i class="icon-trash"></i>
+        <% end %>
+        
+
+       
+        
+      </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to new_admin_news_path, :title => '新頁面', :class => 'btn btn-small btn-primary' do%>
+  <i class="icon-plus"></i> 新頁面
+<% end %>
+
+<%= paginate @admin_news %>

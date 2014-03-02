@@ -1,0 +1,26 @@
+<%= form_tag self_learning_exam_path, :method => 'post', :id => 'self_learning_form' %>
+
+<table class="table">
+  <tr class="">
+    <th class="span1"></th>
+    <th class="span4">英文</th>
+    <th>詞性</th>
+    <th class="span4">中文</th>
+  </tr>
+  <% number = 0 %>
+  <% @learnings.each do |lrn| %>
+  <% number = number + 1 %>
+  <tr>
+    <td class="span1"><%= number %></td>
+    <td><%= lrn.original %></td>
+    <td><%= lrn.word_type %></td>
+    <td>
+      <%= text_field_tag "answers[#{lrn.id}][text]", nil, :class => "input" %>
+      <%= hidden_field_tag "answers[#{lrn.id}][id]", lrn.id %>
+    </td>
+  </tr>
+  <% end %>
+</table>
+<button type="submit" class="btn btn-primary pull-right"><i class="icon-ok icon-white"></i> 送出</button>
+</form>
+<%= render "link_back" %>

@@ -1,0 +1,135 @@
+@import 'variables.css.scss';
+
+ul.nav {
+  li.dropdown {
+    ul.dropdown-menu {
+      li.block-1 a{
+        color: $blue;
+      }
+      li.block-2 a{
+        color: $red;
+      }
+      li.block-3 a{
+        color: $green;
+      }
+      li.block-4 a{
+        color: $purple;
+      }
+    }
+  }
+}
+
+/************************ Container ************************/
+.container {
+  position: relative;
+  header {
+    padding-top: 46px;
+    img.logo {
+      height: 50px;
+      width: auto;
+    }
+    #user-panel {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+    }
+  }
+  #main-content {
+    min-height:600px;
+    padding-bottom: 50px;
+  }
+  .flash-message {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+
+
+  }
+  footer {
+    min-height: 60px;
+    border-top: 1px $gray solid;
+    color: $gray;
+    padding: 10px 0;
+    font-size:12px;
+    text-align: right;
+  }
+}
+
+/*************************** Banners **************************/
+.banner {
+  overflow: hidden;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+}
+.banner img {
+  width: 100%;
+  height: 100%;
+}
+.half-banner {
+  width: 234px;
+  height: 60px;
+}
+.skyscraper {
+  width: 120px;
+  height: 600px;
+}
+.banner-top {
+  margin-right: 10px;
+}
+#banner-left, #banner-right {
+  position: absolute;
+  top: 170px;
+}
+#banner-left {
+  left: -130px;
+}
+#banner-right {
+  right: -130px;
+
+}
+
+
+/*************************** General formatter **************************/
+.center {
+  float: none;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.label a {
+  color: inherit;
+  text-decoration: inherit;
+}
+
+.full-width {
+  box-sizing: border-box;
+  width: 100%;
+}
+
+table tr.read td, table tr.read td a {
+  color: $gray;
+}
+
+table tr.sortable>th {
+  cursor: pointer;
+}
+
+a.edit {
+  color: #ccc;
+}
+a.danger {
+  color: $danger;
+}
+
+a.warning {
+  color: $warning;
+}
+
+a.cancal {
+  color: inherit;
+}
+
+@import 'study.css.scss'
+
+

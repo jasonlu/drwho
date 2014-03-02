@@ -1,0 +1,56 @@
+<table class="table table-striped">
+  <thead>
+    <tr class="sortable">
+      <th class="span2 serial" data-sorting="serial">編號</th>
+      <th class="span2 category" data-sorting="category">課程分類</th>
+      <th class="title" data-sorting="title">課程名稱</th>
+      
+      <th class="span2 unit" data-sorting="unit">單元</th>
+      <th class="span2 price" data-sorting="price">價格</th>
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @admin_courses.each do |admin_course| %>
+      <tr>
+        <td><%= admin_course.serial %></td>
+        <td><%= admin_course.category.title %></td>
+        <td><%= admin_course.title %></td>
+        
+        <td><%= admin_course.unit %></td>
+        <td><%= admin_course.price %></td>
+        <td>
+          <!--
+          <%= link_to course_url(admin_course.id), :title => '檢視', :class => 'btn btn-mini' do %>
+          <i class="icon-eye-open"></i> 檢視
+          <% end %>
+          -->
+          <%= link_to edit_admin_course_path(admin_course.id), :title => '編輯', :class => 'btn btn-mini' do %>
+          <i class="icon-edit"></i> 編輯
+          <% end %>
+          
+          <% if admin_course.activate? %>
+            <%= link_to admin_hide_course_path(admin_course), :title => '隱藏', :class => 'btn btn-mini btn-warning', :method => 'patch' do %>
+            <i class="icon-eye-close"></i> 隱藏
+            <% end %>
+          <% else %>
+            <%= link_to admin_unhide_course_path(admin_course), :title => '顯示', :class => 'btn btn-mini btn-success', :method => 'patch' do %>
+            <i class="icon-eye-close"></i> 顯示
+            <% end %>
+          <% end %>
+
+          <%= link_to admin_course_path(admin_course.id), :title => '刪除', :class => 'btn btn-mini btn-danger', method: :delete, data: { confirm: 'Are you sure?' } do %>
+          <i class="icon-trash"></i> 刪除
+          <% end %>
+         </td>
+      </tr>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to '新增課程', new_admin_course_path, :class => 'btn btn-primary' %>
+<%= paginate @admin_courses %>

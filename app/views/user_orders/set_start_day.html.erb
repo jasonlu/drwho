@@ -1,0 +1,76 @@
+
+
+<div class="order-item">
+
+  <table class="table table-strip">
+    <tr class="sortable">   
+      <th class="span2 order-number" data-sorting="order-number" >訂購單編號</th>
+      <th class="category" data-sorting="category">課程分類</th>
+      <th class="title" data-sorting="title">課程名稱</th>
+      <th class="unit" data-sorting="unit">單元數</th>
+      <th class="span1">上課時間長度</th>
+      <th class="span2">開始上課日期</th>
+      <th class="span2">結束上課日期</th>
+      <th class="span"></th>
+    </tr>
+
+    <% @studies.each do |study| %>
+      
+    <tr>
+      
+      <td><%= study.user_order.order_number %></td>
+      <td><%= study.course.category.title %></td>
+      <td><%= link_to study.course.title, course_path(study.course_id) %></td>
+      <td><%= study.course.unit %></td>
+      <td><%= study.course.duration_days %></td>
+      <td class="span2">
+        <input class="start-day span2" data-duration-days="<%= study.course.duration_days %>" data-id="<%= study.id %>" id="study_<%= study.id %>_starts_at" min="<%= Date.today %>" name="study[<%= study.id %>][starts_at]" type="date" value="<%= study.starts_at %>" />
+      <td class="span2">
+        <input class="end-day span2" id="study_<%= study.id %>_ends_at" name="study[<%= study.id %>][ends_at]" readonly="readonly" type="date" value="<%= study.ends_at %>" />
+      </td>
+      <td><a data-id="<%= study.id %>" id="study_<%= study.id %>_submit" class="btn btn-primary save" disabled >儲存</a></td>
+      
+    </tr>
+      
+    <% end %>
+  </table>
+  <%= paginate @studies %>
+
+</div>
+
+
+
+
+
+<script type="text/javascript">
+$(document).ready(function(){
+  $("input.start-day").change(function(ev){
+    id = $(this).data('id');
+    day = $(this).val();
+
+    setStartDay(day, id, false);
+  });
+
+  $("a.save").click(function(ev){
+    id = $(this).data('id');
+    day = $("input#study_" + id + "_starts_at").val();
+
+    setStartDay(day, id, true);
+  });
+  function setStartDay(day, id, save) {
+    if (typeof save == undefined) {
+      save = false
+    } 
+    $.ajax({
+      url: 'study/set_start_day/' + id,
+      method: 'patch',
+      dataType: 'json',
+      data: {starts_at: day, save: save},
+      success: function(res){
+        $('#study_' + id + '_ends_at').val(res.ends_at);
+        $('#study_' + id + '_submit').removeAttr('disabled');
+      }
+    });
+  }
+});
+</script>

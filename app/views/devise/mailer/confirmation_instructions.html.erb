@@ -1,0 +1,5 @@
+<p>歡迎！ <%= @email %>!</p>
+
+<p>請點擊以下連結以確認您的 email 地址:</p>
+
+<p><%= link_to '確認我的email', confirmation_url(@resource, :confirmation_token => @resource.confirmation_token) %></p>

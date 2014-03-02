@@ -1,0 +1,33 @@
+<h1>Listing click_records</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Url</th>
+      <th>From</th>
+      <th>Ad</th>
+      <th>Referer</th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @click_records.each do |click_record| %>
+      <tr>
+        <td><%= click_record.url %></td>
+        <td><%= click_record.from %></td>
+        <td><%= click_record.ad_id %></td>
+        <td><%= click_record.referer %></td>
+        <td><%= link_to 'Show', click_record %></td>
+        <td><%= link_to 'Edit', edit_click_record_path(click_record) %></td>
+        <td><%= link_to 'Destroy', click_record, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Click record', new_click_record_path %>

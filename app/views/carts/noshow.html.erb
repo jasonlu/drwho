@@ -1,0 +1,19 @@
+<dl class="dl-horizontal">
+  <dt><%= t('姓名') %></dt>
+  <% unless current_user.nil? %>
+  <dd><%= current_user.user_profile.lastname %> <%= current_user.user_profile.firstname %></dd>
+  <% end %>
+  <dt><%= t('會員編號') %></dt>
+  <% unless current_user.nil? %>
+  <dd><%= current_user.serial_id %></dd>
+  <% end %>
+</dl>
+<hr>
+
+<div class="alert">
+  <p class="text-center">
+  <strong>購物車內沒有任何課程，要不要去<%= link_to "選購", courses_path %>一下呢？</strong>
+  </p>
+</div>
+
+<hr class="clearfix">

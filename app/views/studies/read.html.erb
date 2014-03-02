@@ -1,0 +1,31 @@
+<link rel="stylesheet" href="/assets/study.css">
+<script src="/javascripts/audio-player.js"></script>
+<h2 class="title title_day">第 <%= @day %> 天的進度 課程內容</h2>
+<p>
+  當您按下語音檔，按一次開始重複播放，再按一次即停止。建議您先聽全部單字拼音，按一次之後，閉上眼睛專心聆聽。直到聽到單字可以馬上知道如何拼字後，再按一次以停止播放，繼續下方內容的學習。
+</p>
+
+<ul>
+  <li>步驟一：<a class="btn btn-play-all" ><i class="icon-headphones"></i>播放全部單字拼音</a></li>
+  <li>步驟二：
+    <div id="audio_player">Loading the player...</div>
+    <div id="study_block">
+      <% i = 0 %>
+      <% @course_items.each do |item| %>
+      <% i = i + 1 %>
+      <div class="row">
+      <dl class="course_item course_item_<%= i %> span10">
+        <dt><%= item.question %></dt>
+        <dd data-audio-url="<%= item.file_path %>">
+          <%= item.answer %>
+        </dd>
+      </dl>
+      <a class="btn btn-play pull-right span1" data-audio-url="<%= item.file_path %>"><i class="icon-headphones"></i> 播放</a>
+      </div>
+      <% end %>
+    </div>
+  </li>
+</ul>
+<%= link_to study_path(@study), :class => "btn btn-primary" do %>
+  <i class="icon-chevron-left"></i>完成學習內容，回到課程進度學習表
+<% end %>

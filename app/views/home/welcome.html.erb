@@ -1,0 +1,18 @@
+<div class="hero-unit"><%= @mfg.html_safe %>
+</div>
+
+<% @news.each do  |news| %>
+
+<div class="page-header">
+  <h1><%= news.title %><br><small><%= news.created_at.localtime.to_date %></small></h1>
+  
+</div>
+<p>
+  <%= simple_format(news.content) %>
+</p>
+<p class="text-right text-info"><%= news.user.fullname unless news.user.nil? %></p>
+
+<% end %>
+<h2 id="courses">熱門課程</h2>
+<%= render :partial => "/courses/table" %>
+

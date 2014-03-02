@@ -1,0 +1,91 @@
+<ul class="nav nav-tabs nav-stacked block-1">
+  
+  <li class="nav-header">營運管理</li>
+  <% if can? :manage, UserOrder %>
+  <li class="<%= 'active' if controller.controller_name == 'orders' %>">
+    <%= link_to '訂單管理', admin_orders_path %>
+  </li>
+  <% end %>
+
+  <% if can? :manage, Course %>
+  <li class="<%= 'active' if controller.controller_name == 'courses' %>">
+    <%= link_to '課程管理', admin_courses_path %>
+  </li>
+  <% end %>
+
+  <% if can? :manage, Message %>
+  <li class="<%= 'active' if controller.controller_name == 'news' %>">
+    <%= link_to '重要訊息管理', admin_news_index_path %>
+  </li>
+  <% end %>
+</ul>
+
+
+<ul class="nav nav-tabs nav-stacked block-2">
+  <li class="nav-header">會員管理</li>
+  <% if can? :manage, User %>
+  <li class="<%= 'active' if controller.controller_name == 'users' %>">
+    <%= link_to '會員管理', admin_users_path %>
+  </li>
+
+  <li class="<%= 'active' if controller.controller_name == 'messages' %>">
+    <%= link_to '會員訊息管理', admin_messages_path %>
+  </li>
+  <% end %>
+</ul>
+
+
+<ul class="nav nav-tabs nav-stacked block-5">
+  <li class="nav-header">會員學習進度</li>
+  <% if can? :manage, User %>
+  <li class="<%= 'active' if controller.controller_name == 'users' %>">
+    <%= link_to '選開課日', admin_set_start_day_path %>
+  </li>
+  <li class="<%= 'active' if controller.controller_name == 'messages' %>">
+    <%= link_to '學習紀錄', admin_study_record_path %>
+  </li>
+  <li class="<%= 'active' if controller.controller_name == 'messages' %>">
+    <%= link_to '易錯排行榜', admin_study_wrong_list_path %>
+  </li>
+  <% end %>
+</ul>
+
+<ul class="nav nav-tabs nav-stacked block-3">
+  <li class="nav-header">行銷管理</li>
+  <% if can? :manage, SiteConfig %>
+  <li class="<%= 'active' if controller.controller_name == 'home' %>">
+    <%= link_to '首頁管理', admin_mfg_path %>
+  </li>
+  <% end %>
+  
+  <% if can? :manage, Page %>
+  <li class="<%= 'active' if controller.controller_name == 'pages' %>">
+    <%= link_to '靜態頁面管理', admin_pages_path %>
+  </li>
+  <% end %>
+
+  <% if can? :manage, Ad %>
+  <li class="<%= 'active' if controller.controller_name == 'Ads' %>">
+    <%= link_to '廣告管理', admin_ads_path %>
+  </li>
+  <% end %>
+
+</ul>
+
+
+
+<ul class="nav nav-tabs nav-stacked block-4">
+  <li class="nav-header">網站管理</li>  
+  <% if can? :manage, SiteConfig %>
+  <li class="<%= 'active' if controller.controller_name == 'site_configs' %>">
+    <%= link_to '網站參數設定', admin_site_configs_path %>
+  </li>
+  <% end %>
+
+  <% if can? :manage, Admin %>
+  <li class="<%= 'active' if controller.controller_name == 'admins' %>">
+    <%= link_to '網站管理員管理', admin_admins_path %>
+  </li>
+  <% end %>
+
+</ul>

@@ -1,0 +1,35 @@
+
+<div class="page-header">
+  <h1>選開課日:<small>請選擇開課日</small></h1>
+</div>
+<table class="table table-striped">
+  <tr>
+    <th>合約編號</th>
+    <th>課程分類</th>
+    <th>課程名稱</th>
+    <th>單元數</th>
+    <th>課程編號</th>
+    <th>上課時間長度</th>
+    <th>開始上課日期</th>
+    <th>結束上課日期</th>
+    <th>備註</th>
+  </tr>
+  <% @studies.each do |study| %>
+  <%= form_for study do |study_form| %>
+  <tr>
+    <td><%= study.user_order.order_number %></td>
+    <td><%= study.course.category.title %></td>
+    <td><%= study.course.title %></td>
+    <td><%= study.course.unit %></td>
+    <td><%= study.course.serial %></td>
+    <td><%= study.course.duration_days %></td>
+    <td><%= study_form.text_field :starts_at, default: study.starts_at %></td>
+    <td><%= study.ends_at %></td>
+    <td>備註</td>
+  </tr>
+  <% end %>
+  <% end %>
+</table>
+
+
+

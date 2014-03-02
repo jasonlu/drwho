@@ -1,0 +1,37 @@
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>標題</th>
+      <th>網址</th>
+      <th>最後更新</th>
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @admin_pages.each do |admin_page| %>
+      <tr>
+        <td><%= admin_page.title %></td>
+        <td><%= admin_page.key %></td>
+        <td><%= admin_page.updated_at.localtime %></td>
+        
+        <td>
+        
+        <%= link_to edit_admin_page_path(admin_page), :title => '編輯', :class => 'btn btn-mini' do %>
+        <i class="icon-edit"></i>
+        <% end %>
+        <%= link_to admin_page_path(admin_page), method: :delete, :title => '刪除', :class => 'btn btn-mini btn-danger', data: { confirm: 'Are you sure?' } do %>
+        <i class="icon-trash"></i>
+        <% end %>
+        
+      </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to new_admin_page_path, :title => '新頁面', :class => 'btn btn-small btn-primary' do%>
+  <i class="icon-plus"></i> 新頁面
+<% end %>

@@ -1,0 +1,13 @@
+<% @news.each do  |news| %>
+
+<div class="page-header">
+  <h1><small><%=  link_to  news.title, news_item_path(news.title) %></small></h1>
+</div>
+<p>
+  <%= simple_format(news.content) %>
+</p>
+<p class="text-right text-info"><%= news.user.user_profile.firstname + ' ' + news.user.user_profile.lastname %></p>
+
+<% end %>
+
+<%= paginate @news %>

@@ -1,0 +1,22 @@
+<table class="table">
+  <tr>
+    <th class="span1"></th>
+    <th class="span4">英文</th>
+    <th>詞性</th>
+    <th class="span4">中文</th>
+  </tr>
+  <% number = 0 %>
+  <% @learnings.each do |lrn| %>
+  <% number = number + 1 %>
+  <tr>
+    <td class="span1"><%= number %></td>
+    <td class="span4"><%= lrn.original %></td>
+    <td><%= lrn.word_type %></td>
+    <td class="span4"><%= lrn.translation %></td>
+  </tr>
+  <% end %>
+</table>
+<%= render "link_back" %>
+<%= link_to "修改", self_learning_edit_path, :class => 'edit warning' %>
+<%= link_to "刪除", self_learning_path, :method => 'delete', :class => 'delete danger', :data => {:confirm => '確定要刪除此記錄嗎？', :disable_with => '...'} %>
+<%= render "link_forward_to_exam" %>

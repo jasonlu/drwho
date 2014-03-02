@@ -1,0 +1,7 @@
+<div class="page-header">
+  <h1><small><%= @news.title %></small></h1>
+</div>
+<p>
+  <%= @news.content.html_safe %>
+</p>
+<p class="text-right text-info"><%= @news.user.user_profile.firstname + ' ' + @news.user.user_profile.lastname %></p>

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta name="keywords" content="<%= @config[:keywords]%>">
+  <meta name="description" content="<%= @config[:description]%>"/>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title><%= @config[:title]%></title>
+  <%= stylesheet_link_tag    "/stylesheets/bootstrap.min", :media => "all" %>
+  <%= stylesheet_link_tag    "/stylesheets/custom-theme/jquery-ui-1.10.0.custom.css", :media => "all" %>
+  <%= stylesheet_link_tag    "application", :media => "all" %>
+
+  <%= javascript_include_tag "application" %>
+  <%= javascript_include_tag "/javascripts/jquery-ui-1.10.3.custom.min.js" %>
+  <%= javascript_include_tag "/javascripts/jquery.blockUI" %>
+  <%= javascript_include_tag "/javascripts/bootstrap.min" %>
+  <%= javascript_include_tag "/javascripts/init.js" %>
+  <%= javascript_include_tag params[:controller] %>
+  <%= csrf_meta_tags %>
+  <% unless @sorting_class.blank? %>
+  <meta name="sorting" content="<%= @sorting_class %>" >
+  <% end %>
+</head>
+<body>
+  <div class="center container" id="container">
+    <% unless @ads[:left].nil? %>
+    <div class="banner skyscraper" id="banner-left"><%= @ads[:left].link_tag %></div>
+    <% end %>
+
+    <% unless @ads[:right].nil? %>
+    <div class="banner skyscraper" id="banner-right"><%= @ads[:right].link_tag %></div>
+    <% end %>
+
+  <%= render "common/header" %>
+  <%= render "common/main_nav" %>
+  <!--
+  <p class="notice"><%= notice %></p>
+  <p class="alert"><%= alert %></p>
+  -->
+
+  <section id="main-content" class="<%= params[:controller] %>-block" style="">
+    <%= render "common/flash_message" %>
+    <%= yield %>
+  </section>
+
+
+<footer><%= @config[:copyright].html_safe %></footer>
+</div>
+
+</body>
+</html>

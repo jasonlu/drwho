@@ -1,0 +1,20 @@
+<table class="table table-striped">
+  <tr class="sortable">
+    <th class="span4 order-number" data-sorting="order-number">購物單編號</th>
+    <th class="span4 created-at" data-sorting="created-at">購物單日期</th>
+    <th class="span1 payment-status" data-sorting="payment-status">付款</th>
+    <th class="span1 price" data-sorting="price">價格</th>
+    
+  </tr>
+
+<% @user_orders.each do |user_order| %>
+  <tr class="<%= user_order.payment_status == 1 ? '' : 'warning' %>">
+    <td><%= link_to user_order.order_number, user_order_path(user_order.order_number) %></td>
+    <td><%= user_order.created_at.localtime %></td>
+    <td><%= user_order.payment_status == 1 ? '已付款' : '未付款' %></td>
+    <td><%= user_order.price %></td>
+    
+  </tr>
+<% end %>
+</table>
+<%= paginate @user_orders %>

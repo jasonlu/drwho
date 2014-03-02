@@ -1,0 +1,29 @@
+<header>
+    <div class="row">
+      <span class="span5">
+        <a href="/"><h1 class="site_title"><%= image_tag "/images/logo.jpg", height: "50", class: "logo" %><%= @config[:sitename]%></h1></a>
+      </span>
+      <span class="span7">
+        <% unless @ads[:top_1].nil? %>
+        <div class="banner pull-right banner-top half-banner" id="banner-top1"><%= @ads[:top_1].link_tag %></div>
+        <% end %>
+        <% unless @ads[:top_2].nil? %>
+        <div class="banner pull-right banner-top half-banner" id="banner-top2"><%= @ads[:top_2].link_tag %></div>
+        <% end %>
+        
+      </span>
+    </div>
+    <div id="user-panel" class="">
+      <% if user_signed_in? %>
+      <%=t('歡迎！')%> <%= current_user.email %>
+      <% else %>
+      <%= link_to t("登入"), new_user_session_path %> /
+      <%= link_to t("註冊"), new_user_registration_path %>
+      <% end %>
+      <span class="label label-info"><%= link_to t("新訊息") + ' ' + @new_messages.to_s, inbox_path %></span>
+      <a class="btn btn-small" href="<%= cart_path %>"><i class="icon-shopping-cart"></i> 購物車</a>
+      <% if user_signed_in? %>
+      <%= link_to t("登出"), destroy_user_session_path, class: "btn btn-small" %>
+      <% end %>
+    </div>
+  </header>

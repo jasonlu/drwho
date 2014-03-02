@@ -1,0 +1,68 @@
+<%
+  if params[:action] == 'new'
+    mode = "new"
+  else
+    mode = "edit"
+  end
+%>
+<% if mode == "new" %>
+  <%= form_tag self_learnings_path, :method => 'post', :id => 'self_learning_form' %>
+<% else %>
+  <%= form_tag self_learning_path(@learnings.first.grouping_id), :method => 'patch', :id => 'self_learning_form' %>
+<% end %>
+<table class="table table-striped">
+<tr>
+  <th class="span1"></th>
+  <th class="span4">英文</th>
+  <th>詞性</th>
+  <th class="span4">中文</th>
+</tr>
+<% for i in 0..19 do %>
+<tr>
+  <td class="span1"><%= i + 1 %></td>
+  <td class="span4">
+    <%= text_field_tag "original[]", @learnings[i].original, :id => "original_#{i}", :class => "input" %>
+    <% if mode == "edit" %>
+     <%= hidden_field_tag "id[]", @learnings[i].id, :id => "id_#{i}" %>
+     <%= hidden_field_tag "order[]", @learnings[i].order.blank? ? i * 10 : @learnings[i].order, :id => "order_#{i}" %>
+    <% end %>
+  </td>
+  <td>
+    <%= text_field_tag "word_type[]", @learnings[i].word_type, :id => "word_type_#{i}", :class => "input" %>
+  </td>
+  <td class="span4">
+    <%= text_field_tag "translation[]", @learnings[i].translation, :id => "translation_#{i}", :class => "input" %>
+  </td>
+</tr>
+<% end %>
+</table>
+<%= render "link_back" %>
+
+<button class="btn btn-primary pull-right" type="submit"><i class="icon-ok icon-white"></i>
+  <% if mode == "edit" %>
+    修改
+  <% elsif mode == "new" %>
+    新增
+  <% end %>
+</button>
+</form>
+
+<script>
+$("form#self_learning_form").submit(function(){
+  var f = $(this);
+  var canSubmit = true;
+  f.find("input[type=text]").each(function(){
+    var val = $(this).val();
+    if(val == '') {
+      canSubmit = false;
+    }
+  });
+
+  if(canSubmit) {
+    return true;
+  } else {
+    alert("Please complete this form.");
+    return false;
+  }
+});
+</script>
