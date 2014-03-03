@@ -111,11 +111,11 @@ namespace :deploy do
 end
 
 
-after "deploy:create_symlink", "deploy:symlink_shared"
-before "deploy:symlink_shared", "deploy:copy_files"
-after "deploy:symlink_shared", "deploy:assets:precompile"
-before "deploy:assets:precompile", "bundle:install"
-after "bundle:install", "deploy:migrate"
+after "deploy:create_symlink", "deploy:copy_files", "deploy:symlink_shared", "bundle:install", "deploy:migrate"
+#before "deploy:symlink_shared", "deploy:copy_files"
+#after "deploy:symlink_shared", "deploy:assets:precompile"
+#before "deploy:assets:precompile", "bundle:install"
+#after "bundle:install", "deploy:migrate"
 #before "deploy:restart", "bundle:install"
 
 
