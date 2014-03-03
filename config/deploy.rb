@@ -74,6 +74,7 @@ namespace :deploy do
   task :symlink_shared, :roles => [:app, :web] do
     run "ln -nfs #{shared_path}/config/database.yml #{release_path}/config/database.yml"
     run "ln -nfs #{shared_path}/config/initializers/secret_token.rb #{release_path}/config/initializers/secret_token.rb"
+    run "ln -nfs #{shared_path}/doc/mfg.html #{release_path}/doc/mfg.html"
     run "ln -nfs #{shared_path}/assets #{release_path}/assets"
     run "ln -nfs #{shared_path}/uploads #{release_path}/public/uploads"
     run "ln -nfs #{shared_path}/files #{release_path}/public/files"
