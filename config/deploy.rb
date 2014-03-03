@@ -67,7 +67,7 @@ namespace :deploy do
 
   desc "Migrate DB"
   task :migrate do
-    run "cd #{current_path} && rake db:migrate RAILS_ENV=production"
+    run "cd #{current_path} && rake db:migrate RAILS_ENV=#{rails_env}"
   end
 
   desc "symlink shared files between releases"
