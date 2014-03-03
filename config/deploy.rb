@@ -28,6 +28,43 @@ def remote_file_exists?(full_path)
   'true' ==  capture("if [ -e #{full_path} ]; then echo 'true'; fi").strip
 end
 
+namespace :db do
+  config = YAML.load_file(File.join('config', 'database.yml'))
+  
+  desc "Migrate DB"
+  task :migrate do
+    run "cd #{current_path} && rake db:migrate RAILS_ENV=#{rails_env}"
+  end
+  
+  task :dump do
+    
+    db_config = config[rails_env]
+    
+    backup_path = File.join('db', Time.now.strftime("backup_#{db_config['database']}_%Y-%m-%e.sql"))
+    on_rollback { delete backup_path, :recursive => false }
+    backup_file = File.new(backup_path, 'w+')
+
+    run "mysqldump --default-character-set=utf8 " +
+    "--user=#{db_config['username']} " +
+    "--password " +
+    "-B #{db_config['database']}" do |channel,stream,data|
+      if stream == :out
+        backup_file.write(data)
+        #puts data
+      else
+        if data =~ /^Enter password:/
+          puts data
+          channel.send_data(db_config['password'])
+          channel.send_data("\n")
+        else
+          raise Capistrano::Error, "unexpected output from mysqldump: " + data
+        end
+      end
+    end
+    #run "mysql -u onlynet -p onlynet_dev | mysqldump -u onlynet -p onlynet_prod"
+  end
+  
+end
 
 namespace :deploy do
   task :start do
@@ -65,10 +102,7 @@ namespace :deploy do
     end
   end
 
-  desc "Migrate DB"
-  task :migrate do
-    run "cd #{current_path} && rake db:migrate RAILS_ENV=#{rails_env}"
-  end
+  
 
   desc "symlink shared files between releases"
   task :symlink_shared, :roles => [:app, :web] do
@@ -99,20 +133,19 @@ namespace :deploy do
     run_locally "git add . && git commit -am 'quick_deploy' && git push"
     deploy.quick
   end
+end
 
-  namespace :assets do
-    task :precompile do
-      run "cd #{current_path} && bundle exec rake assets:precompile"
-    end
-    task :clean do
-      run "cd #{shared_path} && rm -Rf ./assets/*"
-    end
+namespace :assets do
+  task :precompile do
+    run "cd #{current_path} && bundle exec rake assets:precompile"
   end
-
+  task :clean do
+    run "cd #{shared_path} && rm -Rf ./assets/*"
+  end
 end
 
 
-after "deploy:create_symlink", "deploy:copy_files", "deploy:symlink_shared", "bundle:install", "deploy:migrate"
+after "deploy:create_symlink", "deploy:copy_files", "deploy:symlink_shared", "bundle:install", "db:migrate"
 #before "deploy:symlink_shared", "deploy:copy_files"
 #after "deploy:symlink_shared", "deploy:assets:precompile"
 #before "deploy:assets:precompile", "bundle:install"
