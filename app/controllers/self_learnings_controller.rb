@@ -8,7 +8,7 @@ class SelfLearningsController < ApplicationController
   end
 
   def check_paid!
-    order = current_user.user_orders.where(:payment_status => 1).first;
+    order = current_user.user_orders.where(:payment_status => 1).where("payment_price > 0").first;
     render :not_paid if order.nil?
   end
 

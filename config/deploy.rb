@@ -40,8 +40,7 @@ namespace :deploy do
   end
   task :restart, :roles => [:web, :app], :except => { :no_release => true } do
     if remote_file_exists?(thin_pid_file)
-      deploy.stop
-      deploy.start
+      run "cd #{current_path} && bundle exec thin restart -C #{thin_config_file}"
     else
       deploy.start
     end
@@ -92,8 +91,7 @@ namespace :deploy do
 
   task :quick do
     deploy.update
-    deploy.stop
-    deploy.start
+    deploy.restart
   end
 
   task :warp10 do
