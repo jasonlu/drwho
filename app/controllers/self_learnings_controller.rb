@@ -102,19 +102,23 @@ class SelfLearningsController < ApplicationController
   end
   def create
     grouping_id = SecureRandom.uuid
-    serial = SelfLearning.order("serial DESC").first.serial.to_i
-    serial = serial + rand(10..50)
+    serial = SelfLearning.order("serial DESC").first.try(:serial).to_i
+    if serial == 0
+      serial = rand(1234567890..9987654321)
+    else
+      serial = serial + rand(10..99)
+    end
+
     for i in 0..params[:original].length
       if params[:original][i].blank?
         next
       end
       learning = Hash.new
-      #learning[:user_id] = current_user.id
       learning[:grouping_id] = grouping_id
       learning[:original] = params[:original][i]
       learning[:translation] = params[:translation][i]
       learning[:word_type] = params[:word_type][i]
-      learning[:order] = params[:order][i]
+      learning[:order] = params[:order].blank? ? i * 10 : params[:order][i]
       learning[:serial] = serial
       current_user.self_learnings.create learning
     end
