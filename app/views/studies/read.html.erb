@@ -26,6 +26,9 @@
     </div>
   </li>
 </ul>
-<%= link_to study_path(@study), :class => "btn btn-primary" do %>
-  <i class="icon-chevron-left"></i>完成學習內容，回到課程進度學習表
+<%= link_to study_path(@study), :class => "btn btn" do %>
+  <i class="icon-arrow-left"></i> 完成學習內容，回到課程進度學習表
+<% end %>
+<%= link_to study_practice_path(:day => params[:day], :phase => 0), :class => "btn btn pull-right" do %>
+  完成學習內容，前往練習一 <i class="icon-arrow-right"></i>
 <% end %>

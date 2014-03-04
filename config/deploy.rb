@@ -102,6 +102,15 @@ namespace :deploy do
     end
   end
 
+  task :download_files do
+    find_servers_for_task(current_task).each do |server|
+      run_locally "rsync -vr #{user}@#{server.host}:#{global_shared_path}/doc/mfg.html doc/mfg.html"
+      run_locally "rsync -vr #{user}@#{server.host}:#{global_shared_path}/uploads public/"
+      run_locally "rsync -vr #{user}@#{server.host}:#{global_shared_path}/ckeditor_assets public/"
+      run_locally "rsync -vr #{user}@#{server.host}:#{global_shared_path}/files public/"
+    end
+  end
+
   
 
   desc "symlink shared files between releases"
@@ -147,7 +156,7 @@ namespace :assets do
 end
 
 
-after "deploy:create_symlink", "deploy:copy_files", "deploy:symlink_shared", "bundle:install", "db:migrate"
+after "deploy:create_symlink", "deploy:copy_files", "deploy:symlink_shared", "bundle:install", "db:migrate", "deploy:cleanup"
 #before "deploy:symlink_shared", "deploy:copy_files"
 #after "deploy:symlink_shared", "deploy:assets:precompile"
 #before "deploy:assets:precompile", "bundle:install"

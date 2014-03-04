@@ -112,7 +112,7 @@ Drwho::Application.routes.draw do
 
     get 'study/:id', :to => 'studies#show', :as => :study
     get 'study/:id/read', :to => 'studies#read', :as => :read_study
-    get 'study/:id/practice', :to => 'studies#practice', :as => :practice_study
+    get 'study/:id/practice', :to => 'studies#practice', :as => :study_practice
     get 'study/:id/exam', :to => 'studies#exam', :as => :exam_study
     post 'study/:id/practice_submit', :to => 'studies#practice_submit'
     post 'study/:id/exam_submit', :to => 'studies#exam_submit'

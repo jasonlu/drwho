@@ -1,6 +1,3 @@
-<style>
-
-</style>
 <h3>課程進度學習表</h3>
 <table class="table table-striped table-study">
   <colgroup>
@@ -54,7 +51,7 @@
       progress_behind = true if today > due_day
     end
 
-    link_reading_str = completed_date_reading.localtime.strftime("%-m / %-d") if !completed_date_reading.nil?
+    link_reading_str = completed_date_reading.localtime.strftime("%-m / %-d") unless completed_date_reading.nil?
     #link_reading_str = completed_date_reading.localtime if !completed_date_reading.nil?
 
 
@@ -90,7 +87,7 @@
         <% do_link = false if j > practices.length || completed_date_reading.nil? %>
         <td>
           <% if do_link %>
-          <%= link_to practices[j].nil? ? (j + 1).to_chinese : practices[j].created_at.strftime("%-m / %-d"), practice_study_path(:day => day, :phase => j) %>
+          <%= link_to practices[j].nil? ? (j + 1).to_chinese : practices[j].created_at.strftime("%-m / %-d"), study_practice_path(:day => day, :phase => j) %>
           <% else %>
           <%= (j + 1).to_chinese %>
           <% end %>
