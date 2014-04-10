@@ -1,40 +1,33 @@
 class StudiesController < ApplicationController
   before_filter :authenticate_user!
   before_filter :check_profile
+  before_filter :select_studies, :only => [:index, :all_records]
+  before_filter :select_study, :only => [:show, :record, :read, :practice, :exam, :compare_result]
   # GET /studies
   # GET /studies.json
-  def index
-    sort = params[:sort]
-    dir = params[:dir]
 
-    case sort
-    when 'category'
-      sort = 'categories.title'
-    when 'title'
-      sort = 'courses.title'
-    when 'unit'
-      sort = 'courses.unit'
-    when 'serial'
-      sort = 'courses.serial'
-    when 'starts_at', 'ends_at'
-    else
-      sort = 'starts_at'
-    end
-    
-    @studies = Study.where('user_id = ? AND starts_at <= ?', current_user.id, Time.zone.today).joins(:course).joins(:category).order(sort + ' ' + dir).page(params[:page])
-    
-    
+
+  
+
+  def index
+    now = Time.now
+    @studies = @studies.where('ends_at >= ?', now)
     respond_to do |format|
       format.html # index.html.erb
       format.json { render json: @studies }
     end
   end
 
+  def all_records
+    now = Time.now
+    @studies = @studies.where('ends_at <= ?', now)
+    
+    render 'record_all'
+  end
+
   # GET /studies/1
   # GET /studies/1.json
   def show
-    @study = Study.find(params[:id])  
-    @gpa = @study.progresses.where('stage = 3').select("AVG(score) AS gpa").first.gpa
 
     respond_to do |format|
       format.html # show.html.erb
@@ -42,8 +35,16 @@ class StudiesController < ApplicationController
     end
   end
 
+  def record
+    @records = @studies.study_records.select('course_item_id, count(*) AS cnt, course_id, study_id').group('course_id').order('cnt DESC')
+    
+    render 'record_courses'
+  end
+
+
+
   def practice
-    @study = Study.find(params[:id])
+    
     @day = params[:day]
     @phase = params[:phase].to_i
     @course_items = @study.course.course_items.where('day = ?', @day)
@@ -70,7 +71,7 @@ class StudiesController < ApplicationController
   end
 
   def exam
-    @study = Study.find(params[:id])
+    
     @day = params[:day].to_i
     @phase = params[:phase].to_i
     @course_items = @study.course.course_items.where('day = ?', @day)
@@ -123,7 +124,8 @@ class StudiesController < ApplicationController
   end
 
   def read
-    @study = Study.find(params[:id])
+    #@study = current_user.studies.where("uuid = ?", params[:uuid]).first
+    
     @day = params[:day]
     @course_items = @study.course.course_items.where('day = ?', @day)
 
@@ -144,17 +146,42 @@ class StudiesController < ApplicationController
   end
 
   def set_start_day
-    @study = Study.find(params[:id])
-    @study.starts_at = params[:starts_at]
-    @study.ends_at = @study.starts_at + @study.course.duration_days
+    if request.patch?
+      @study = current_user.studies.where("uuid = ?", params[:uuid]).first
+      @study.starts_at = params[:starts_at]
+      @study.ends_at = @study.starts_at + @study.course.duration_days - 1
 
-    @study.save if params[:save] == 'true'
-    
-    render :json => @study
+      @study.save if params[:save] == 'true'
+      
+      render :json => @study
+    else
+      sort = params[:sort]
+      dir = params[:dir]
+
+      case sort
+      when 'price'
+        sort = 'payment_price'
+      when 'order_number', 'id', 'created_at'
+      when 'title'
+        sort = 'courses.title'
+      when 'category'
+        sort = 'categories.title'
+      else
+        sort = 'order_number'
+      end
+      @current_section = 'account'
+      @studies = current_user.studies.where("starts_at > ? OR starts_at IS NULL", Time.now()).joins(:user_order).joins(:course).joins(:category).order(sort + ' ' + dir).page(params[:page])
+      
+      if @studies.length == 0
+        render "set_start_day_none"
+      else
+        render "set_start_day"
+      end
+    end
   end
 
   def compare_result(stage)
-    @study = Study.find(params[:id])
+    @study = current_user.studies.where("uuid = ?", params[:uuid]).first
     @day = params[:day]
     
     course_ids = Array.new
@@ -203,26 +230,104 @@ class StudiesController < ApplicationController
   end
 
   def hardests
-    if(params[:id] == 'all')
-      @records = StudyRecord.select('course_item_id, count(*) AS cnt, course_id, study_id').where(:user_id => current_user.id).group('course_item_id').order('cnt DESC')
+    if(params[:uuid] == 'all')
+      #@records = StudyRecord.select('course_item_id, count(*) AS cnt, course_id, study_id').where(:user_id => current_user.id).group('course_item_id').order('cnt DESC')
+      @records = current_user.study_records.select('course_item_id, count(*) AS cnt, course_id, study_id').group('course_item_id').order('cnt DESC')
       render 'hardest_questions'
     elsif(params[:course_id].nil?)
-      @records = StudyRecord.select('course_item_id, count(*) AS cnt, course_id, study_id').where(:study_id => params[:id], :user_id => current_user.id).group('course_item_id').order('cnt DESC')
+      @study = current_user.studies.where(:uuid => params[:uuid]).first
+      @records = @study.study_records.select('course_item_id, count(*) AS cnt, course_id, study_id').group('course_item_id').order('cnt DESC')
       render 'hardest_questions'
     else
-      @records = StudyRecord.select('course_item_id, count(*) AS cnt, course_id, study_id').where(:study_id => params[:id], :user_id => current_user.id).group('course_id').order('cnt DESC')
+      @study = current_user.studies.where(:uuid => params[:uuid]).first
+      @records = @study.study_records.select('course_item_id, count(*) AS cnt, course_id, study_id').group('course_id').order('cnt DESC')
+      #@records = StudyRecord.select('course_item_id, count(*) AS cnt, course_id, study_id').where(:study_id => params[:id], :user_id => current_user.id).group('course_id').order('cnt DESC')
       render 'hardest_courses'
     end
   end
 
-  def records
-    if(params[:course_id].nil?)
-      @records = StudyRecord.select('course_item_id, count(*) AS cnt, course_id, study_id').where(:study_id => params[:id], :user_id => current_user.id).group('course_item_id').order('cnt DESC')
-      render 'record_all'
+
+
+
+  
+
+
+:private
+  def select_studies
+    sort = params[:sort]
+    dir = params[:dir]
+
+    case sort
+    when 'category'
+      sort = 'categories.title'
+    when 'title'
+      sort = 'courses.title'
+    when 'unit'
+      sort = 'courses.unit'
+    when 'serial'
+      sort = 'courses.serial'
+    when 'starts_at', 'ends_at'
     else
-      @records = StudyRecord.select('course_item_id, count(*) AS cnt, course_id, study_id').where(:study_id => params[:id], :user_id => current_user.id).group('course_id').order('cnt DESC')
-      render 'record_courses'
+      sort = 'starts_at'
     end
+    
+    now = Time.now
+    @studies = current_user.studies.where('starts_at <= ?', now).joins(:course).joins(:category).order(sort + ' ' + dir).page(params[:page])
+    # DateTime.now.beginning_of_day
+    # DateTime.now.end_of_day
+    @studies.each do |study|
+      end_day = study.ends_at.to_time.end_of_day
+
+      if end_day < now and study.score.blank?
+        #caculate the final GPA
+        score = caculate_score(study.id)
+        study.score = score
+        study.passed = score >= 95.00 ? true : false
+        Study.find(study.id).update(:score => study.score, :passed => study.passed)
+      end
+    end
+
+
+  end
+
+  def caculate_score(study_id)
+    score = 0.0
+    total_exams = 0
+    total_days = Study.find(study_id).course.duration_days
+    exams_in_day = Array.new(total_days, 0)
+    progresses = current_user.progresses.where(:study_id => study_id, :stage => 3).order("day ASC").all
+    progresses.each do |pro|
+      exams_in_day[pro.day - 1] = exams_in_day[pro.day - 1] + 1
+      score = score + pro.score
+      total_exams = total_exams + 1
+    end
+
+    exams_in_day.each do |exam|
+      total_exams = total_exams + 1 if exam == 0
+    end
+
+    score = score / total_exams if total_exams > 0
+    return score
+  end
+
+  def select_study
+    @ended = false
+    @study = current_user.studies.where("uuid = ?", params[:uuid]).first
+    #@study = current_user.studies.find(params[:id])
+    # stage: 3 => exam
+    # phase: start from 0, max 12, the "module"
+    # GPA = SUM( SUM(scores_of_day) / module_of_day_taken ) / total_days
+    #@story_records = @study.progresses.where('stage = 3').all
+
+    @gpa = 0.0
+    #@story_records.each |rec| do
+    #end
+    if @study.score.nil?
+      @gpa = @study.progresses.where('stage = 3').select("AVG(score) AS gpa").first.gpa
+    else 
+      @gpa = @study.score
+    end
+
   end
 
  

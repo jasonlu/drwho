@@ -115,18 +115,18 @@ table tr.sortable>th {
   cursor: pointer;
 }
 
-a.edit {
+.edit {
   color: #ccc;
 }
-a.danger {
+.danger {
   color: $danger;
 }
 
-a.warning {
+.warning {
   color: $warning;
 }
 
-a.cancal {
+.cancal {
   color: inherit;
 }
 

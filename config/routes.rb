@@ -65,7 +65,7 @@ Drwho::Application.routes.draw do
     get "my_account/news"
     get "my_account/logout"
 
-    get "set_start_day", :to => 'user_orders#set_start_day', :as => :set_start_day
+    
 
     get "calendar", :to => 'my_account#calendar'
     #resources :carts
@@ -108,20 +108,19 @@ Drwho::Application.routes.draw do
     post 'study/self_learning/:grouping_id/exam', :to => 'self_learnings#exam_result'
     get 'study/self_learning/:grouping_id/edit', :to => 'self_learnings#edit', :as => :self_learning_edit
     
-
-
-    get 'study/:id', :to => 'studies#show', :as => :study
-    get 'study/:id/read', :to => 'studies#read', :as => :read_study
-    get 'study/:id/practice', :to => 'studies#practice', :as => :study_practice
-    get 'study/:id/exam', :to => 'studies#exam', :as => :exam_study
-    post 'study/:id/practice_submit', :to => 'studies#practice_submit'
-    post 'study/:id/exam_submit', :to => 'studies#exam_submit'
+    get 'study/records', :to => 'studies#all_records', :as => :study_all_records
+    get 'study/records/:id', :to => 'studies#record', :as => :study_records
     
-    get 'study/:id/hardests(/course/:course_id)', :to => 'studies#hardests', :as => :hardests_study
-    get 'study/:id/records', :to => 'studies#records', :as => :records_study
-    #get 'study/:id/edit', :to => 'studies#edit', :as => :edit_study
-    #patch 'study/:id', :to => 'studies#update'
-    patch 'study/set_start_day/:id', :to => 'studies#set_start_day'
+    patch 'study/set_start_day/:uuid', :to => 'studies#set_start_day'
+    get "study/set_start_day", :to => 'studies#set_start_day', :as => :set_start_day
+    
+    get 'study/read/:uuid/:day', :to => 'studies#read', :as => :study_read
+    get 'study/practice/:uuid/:day/phase/:phase', :to => 'studies#practice', :as => :study_practice
+    post 'study/practice/:uuid/:day/phase/:phase', :to => 'studies#practice_submit'
+    get 'study/exam/:uuid/:day/phase/:phase', :to => 'studies#exam', :as => :study_exam
+    post 'study/exam/:uuid/:day/phase/:phase', :to => 'studies#exam_submit'
+    get 'study/hardests/:uuid(/course/:course_id)', :to => 'studies#hardests', :as => :study_hardests
+    get 'study/:uuid', :to => 'studies#show', :as => :study
     get 'study', :to => 'studies#index', :as => :studies
 
     resources :user_orders

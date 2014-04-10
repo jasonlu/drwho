@@ -41,7 +41,7 @@ class RegistrationsController < Devise::RegistrationsController
         :user_order_id => order.id,
         :course_id => course.id,
         :starts_at => Date.today,
-        :ends_at => Date.today + course.duration_days
+        :ends_at => Date.today + course.duration_days - 1
       )
     end
     

@@ -75,7 +75,7 @@
     <td class="status"><%= status_str %></td>
     <td class="read">
       <% if do_link %>
-      <%= link_to link_reading_str, read_study_path(:day => i + 1) %>
+      <%= link_to link_reading_str, study_read_path(@study.uuid, :day => i + 1) %>
       <% else %>
       <%= link_reading_str %>
       <% end %>
@@ -87,7 +87,7 @@
         <% do_link = false if j > practices.length || completed_date_reading.nil? %>
         <td>
           <% if do_link %>
-          <%= link_to practices[j].nil? ? (j + 1).to_chinese : practices[j].created_at.strftime("%-m / %-d"), study_practice_path(:day => day, :phase => j) %>
+          <%= link_to practices[j].nil? ? (j + 1).to_chinese : practices[j].created_at.strftime("%-m / %-d"), study_practice_path(@study.uuid, :day => day, :phase => j) %>
           <% else %>
           <%= (j + 1).to_chinese %>
           <% end %>
@@ -117,7 +117,7 @@
                   </div>
                   <div class="score">
                   <% if do_link %>
-                    <%= link_to exams[index].nil? ? "測驗" : exams[index].score, exam_study_path(:day => day, :phase => index) %>
+                    <%= link_to exams[index].nil? ? "測驗" : exams[index].score, study_exam_path(@study.uuid, :day => day, :phase => index) %>
                   <% else %>
                     <%= exams[index].nil? ? '-' : exams[index].score %>
                   <% end %>

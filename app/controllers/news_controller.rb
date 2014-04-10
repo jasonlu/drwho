@@ -2,8 +2,7 @@ class NewsController < ApplicationController
   # GET /news
   # GET /news.json
   def index
-    @news = News.all.page(params[:page]).per(5)
-
+    @news = News.letest.page(params[:page]).per(5)
     respond_to do |format|
       format.html # index.html.erb
       format.json { render json: @news }

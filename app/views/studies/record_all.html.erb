@@ -1,0 +1,9 @@
+<% if @studies.length == 0 %>
+<p class="alert alert-information">
+  您沒有已完成的課程
+</p>
+<% else %>
+<h3>所有課程學習記錄</h3>
+<%= render "study_list_table" %>
+
+<% end %>

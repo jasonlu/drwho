@@ -1,3 +1,6 @@
+<% if @news.length == 0 %>
+<div class="alert alert-information">目前沒有重要訊息</div>
+<% end %>
 <% @news.each do  |news| %>
 
 <div class="page-header">

@@ -4,7 +4,7 @@ class HomeController < ApplicationController
       @mfg = f.read
     end
 
-    @news = News.order(publish_at: :desc).limit(3)
+    @news = News.letest.limit(3)
     
     sort = params[:sort]
     dir = params[:dir]

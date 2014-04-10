@@ -6,6 +6,8 @@ class User < ActiveRecord::Base
   has_many :inboxes, :dependent => :destroy
   has_many :messages, through: :inboxes, :dependent => :destroy
   has_many :studies, :dependent => :destroy
+  has_many :study_records, :dependent => :destroy
+  has_many :progresses, :dependent => :destroy
   has_one :user_profile, :dependent => :destroy
   has_one :profile, :foreign_key => 'user_id', :class_name => 'UserProfile'
   before_create :build_user_profile

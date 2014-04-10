@@ -1,5 +1,8 @@
 <h3>選開課日</h3>
 <p>請選擇以下已訂購課程的開課日，請注意，已經開始的課程無法更改開課日</p>
+<p class="alert alert-danger start-on-today" style="display:none;">
+  您選擇了從今日開始上課，一旦您離開此頁面，將無法更改此課程之開課日
+</p>
 <div class="order-item">
 
   <table class="table table-strip">
@@ -24,11 +27,11 @@
       <td><%= study.course.unit %></td>
       <td><%= study.course.duration_days %></td>
       <td class="span2">
-        <input class="start-day span2" data-duration-days="<%= study.course.duration_days %>" data-id="<%= study.id %>" id="study_<%= study.id %>_starts_at" min="<%= Date.today %>" name="study[<%= study.id %>][starts_at]" type="date" value="<%= study.starts_at %>" />
+        <input class="start-day span2" data-duration-days="<%= study.course.duration_days %>" data-id="<%= study.uuid %>" id="study_<%= study.uuid %>_starts_at" min="<%= Date.today %>" name="study[<%= study.uuid %>][starts_at]" type="date" value="<%= study.starts_at %>" />
       <td class="span2">
-        <input class="end-day span2" id="study_<%= study.id %>_ends_at" name="study[<%= study.id %>][ends_at]" readonly="readonly" type="date" value="<%= study.ends_at %>" />
+        <input class="end-day span2" id="study_<%= study.uuid %>_ends_at" name="study[<%= study.uuid %>][ends_at]" readonly="readonly" type="date" value="<%= study.ends_at %>" />
       </td>
-      <td><a data-id="<%= study.id %>" id="study_<%= study.id %>_submit" class="btn btn-primary save" disabled >儲存</a></td>
+      <td><a data-id="<%= study.uuid %>" id="study_<%= study.uuid %>_submit" class="btn btn-primary save" disabled >儲存</a></td>
       
     </tr>
       
@@ -67,6 +70,16 @@ $(document).ready(function(){
       dataType: 'json',
       data: {starts_at: day, save: save},
       success: function(res){
+        var currentDate = new Date()
+        var day = currentDate.getDate()
+        if (day < 10) { day = '0' + day; }
+        var month = currentDate.getMonth() + 1
+        if (month < 10) { month = '0' + month; }
+        var year = currentDate.getFullYear()
+        today = year + "-" + month + "-" + day
+        if(res.starts_at == today) {
+          $(".start-on-today").slideDown("slow");
+        }
         $('#study_' + id + '_ends_at').val(res.ends_at);
         $('#study_' + id + '_submit').removeAttr('disabled');
       }

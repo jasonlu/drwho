@@ -6,6 +6,7 @@
       <th class="span2 order-number" data-sorting="order-number">購物單編號</th>
       <th class="span1 payment-price" data-sorting="payment-price">金額</th>
       <th class="span2 payment-status" data-sorting="payment-status">狀態</th>
+      <th class="span2 serial_id" data-sorting="serial_id">會員編號</th>
       <th class="span2 fullname" data-sorting="fullname">訂購人</th>
       <th></th>
     </tr>
@@ -19,6 +20,7 @@
         <td><%= admin_order.order_number %></td>
         <td><%= admin_order.payment_price %></td>
         <td><%= admin_order.payment_status == 0 ? '未付款' : '已付款' %></td>
+        <td><%= admin_order.user.serial_id %></td>
         <td><%= admin_order.user.fullname %></td>
         <td>
           <!--

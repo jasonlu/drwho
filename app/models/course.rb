@@ -1,5 +1,8 @@
 class Course < ActiveRecord::Base
 
+  before_validation :generate_serial
+  before_create :generate_uuid
+
   has_many :course_items, :dependent => :delete_all, :inverse_of => :course
   belongs_to :category
   belongs_to :group
@@ -24,6 +27,17 @@ class Course < ActiveRecord::Base
     'C' + Time.now.to_i.to_s
   end
 
+  def generate_uuid
+    self.uuid = SecureRandom.uuid
+  end
+  
+  def generate_serial
+    serial = self.class.where(:category_id => self.category_id).length
+    serial = serial + 1
+    serial = serial.to_s.rjust(3, '0')
+    self.serial =  'C' + self.category_id.to_s.rjust(3, '0') + 'N' + serial
+  end
+
   def activate?
     if self.end_at == self.start_at
       return false
@@ -39,4 +53,6 @@ class Course < ActiveRecord::Base
       return false
     end
   end
+
+
 end

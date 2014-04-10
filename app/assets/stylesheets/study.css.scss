@@ -17,6 +17,13 @@
     display: none;
   }
 
+  .success {
+    color: $success;
+  }
+
+  .fail {
+    color: $danger
+  }
 
   td, th {
     vertical-align: middle !important;

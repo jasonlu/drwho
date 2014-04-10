@@ -1,0 +1,90 @@
+zh-TW:
+  FREE_COURSE: 免費課程
+  update_self_learning_successful: 自我學習單字表修改完成
+  update_self_learning_failed: 自我學習單字表修改失敗
+  create_self_learning_successful: 自我學習單字表新增完成
+  create_self_learning_failed: 自我學習單字表新增失敗
+  create_course_successful: 課程新增成功
+  update_course_successful: 課程修改成功
+
+  activerecord:
+    models:
+      course: 課程
+    attributes:
+      course:
+        title: 課程名稱
+        category_id: 課程分類
+        serial: 序號
+  views:
+    pagination:
+      first: "&laquo; 第一頁"
+      last: "最後一頁 &raquo;"
+      previous: "&lsaquo; 上一頁"
+      next: "下一頁 &rsaquo;"
+      truncate: "..."
+
+  helpers:
+    select:
+      prompt: 請選擇
+    submit:
+      create: 新增%{model}
+      submit: 儲存%{model}
+      update: 更新%{model}
+  number:
+    currency:
+      format:
+        delimiter: ! ','
+        format: ! '%u %n'
+        precision: 2
+        separator: .
+        significant: false
+        strip_insignificant_zeros: false
+        unit: NT$
+    format:
+      delimiter: ! ','
+      precision: 3
+      separator: .
+      significant: false
+      strip_insignificant_zeros: false
+    human:
+      decimal_units:
+        format: ! '%n %u'
+        units:
+          billion: 十億
+          million: 百萬
+          quadrillion: 千兆
+          thousand: 千
+          trillion: 兆
+          unit: ''
+      format:
+        delimiter: ''
+        precision: 1
+        significant: false
+        strip_insignificant_zeros: false
+      storage_units:
+        format: ! '%n %u'
+        units:
+          byte: 位元組
+          gb: GB
+          kb: KB
+          mb: MB
+          tb: TB
+    percentage:
+      format:
+        delimiter: ''
+    precision:
+      format:
+        delimiter: ''
+  support:
+    array:
+      last_word_connector: ! ', 和 '
+      two_words_connector: ! ' 和 '
+      words_connector: ! ', '
+  
+  ckeditor:
+    page_title: "CKEditor Files Manager"
+    confirm_delete: "確定要刪除?"
+    buttons:
+      cancel: "取消"
+      upload: "上傳"
+      delete: "刪除"

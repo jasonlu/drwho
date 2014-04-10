@@ -41,7 +41,7 @@ class Admin::CoursesController < Admin::BackstageController
     @admin_course.end_at = Date.today + 365
     @admin_course.due_at = @admin_course.end_at
     @admin_course.price = 1500
-    @admin_course.serial = Course.generate_serial
+    #@admin_course.serial = Course.generate_serial
   end
 
   # GET /admin/courses/1/edit
@@ -98,7 +98,7 @@ class Admin::CoursesController < Admin::BackstageController
 
 
       #render :json => {:params => admin_course_params, :ci => @rows}
-      redirect_to @admin_course, notice: 'Course was successfully created.'
+      redirect_to @admin_course, notice: t('create_course_successful')
     else
       #render :json => {:error => true, :error_detail => @admin_course.errors, :data => admin_course_params, :raw_data => params}
       render action: 'new', notice: @admin_course.errors

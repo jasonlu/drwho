@@ -1,23 +1,27 @@
 <style>
   .hidden {display: none !important;}
   .mover {cursor: move;}
-  text_area {width: 100%; height: 400px;}
+  textarea {width: 98%; height: 200px;}
 </style>
-<% unless notice.blank? %>
-  
 
-<div class="alert alert-error">
-  <%= error %>
-</div>
 
+<% if @admin_course.errors.any? %>
+<ul class="alert alert-error">
+  <% @admin_course.errors.full_messages.each do |msg| %>
+    <li><%= msg %></li>
+  <% end %>
+</ul>
 <% end %>
+
 <%= form_for(@admin_course) do |f| %>
 <legend><%= @admin_course.title %></legend>
 <fieldset>
   <%= f.label :title, '課程名稱' %>
   <%= f.text_field :title %>
+  <!--
   <%= f.label :serial, '編號' %>
   <%= f.text_field :serial %>
+  -->
 
   <%= f.label :category, '課程分類' %>
   <%= f.select :category_id, Category.all.collect {|p| [ p.title, p.id ] }, :prompt => '- 新增 -' %>
@@ -90,9 +94,11 @@
 </fieldset>
 
   <div class="form-actions">
-    <%= link_to "Back", admin_courses_path, :class => 'btn btn-info', :data => {:disable_with => "Please wait..." } %>
+    <%= link_to admin_courses_path, :class => 'btn btn', :data => {:disable_with => "Please wait..." } do %>
+    <i class="icon-arrow-left"></i> 返回至課程列表
+    <% end %>
 
-    <%= f.submit :class => 'btn btn-primary', :data => { :method => "put", :disable_with => "Saving..." } %>
+    <%= f.submit :class => 'btn btn-primary pull-right', :data => { :method => "put", :disable_with => "Saving..." } %>
 
   
   

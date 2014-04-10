@@ -47,6 +47,11 @@
           <%= notice %>
         </p>
       <% end %>
+      <% unless flash[:error].blank? %>
+        <div class="alert alert-error">
+          <%= flash[:error] %>
+        </div>
+      <% end %>
       <%= yield %>
     </div>
   </div>

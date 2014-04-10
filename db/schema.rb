@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140123010837) do
+ActiveRecord::Schema.define(version: 20140410200321) do
 
   create_table "ads", force: true do |t|
     t.text     "content"
@@ -89,6 +89,7 @@ ActiveRecord::Schema.define(version: 20140123010837) do
     t.datetime "updated_at",    null: false
     t.string   "unit"
     t.string   "serial"
+    t.string   "uuid"
   end
 
   create_table "groups", force: true do |t|
@@ -159,6 +160,7 @@ ActiveRecord::Schema.define(version: 20140123010837) do
 
   create_table "self_learnings", force: true do |t|
     t.integer  "user_id"
+    t.string   "serial",      null: false
     t.string   "original"
     t.string   "translation"
     t.string   "word_type"
@@ -199,6 +201,7 @@ ActiveRecord::Schema.define(version: 20140123010837) do
     t.integer  "user_order_id"
     t.string   "contract_number"
     t.boolean  "activated",       default: false
+    t.string   "uuid"
   end
 
   create_table "study_records", force: true do |t|
