@@ -11,7 +11,7 @@ Drwho::Application.routes.draw do
       resources :orders
       resources :ads
 
-      match "study/set_start_day/", :to => 'studies#set_start_day', via: [:get, :post, :patch], :as => :set_start_day
+      match "study/set_start_day/(:user_id)", :to => 'studies#set_start_day', via: [:get, :post, :patch], :as => :set_start_day
       match "study/record/(:user_id)", :to => 'studies#record', via: [:get, :post], :as => :study_record
       match "study/wrong_list/(:user_id)", :to => 'studies#wrong_list', via: [:get, :post], :as => :study_wrong_list
 

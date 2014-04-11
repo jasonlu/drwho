@@ -77,7 +77,9 @@ namespace :deploy do
   end
   task :restart, :roles => [:web, :app], :except => { :no_release => true } do
     if remote_file_exists?(thin_pid_file)
-      run "cd #{current_path} && bundle exec thin restart -C #{thin_config_file}"
+      deploy.stop
+      deploy.start
+      #run "cd #{current_path} && bundle exec thin restart -C #{thin_config_file}"
     else
       deploy.start
     end

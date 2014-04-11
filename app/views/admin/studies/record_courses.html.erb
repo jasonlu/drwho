@@ -1,0 +1,137 @@
+<h3><%= @user.fullname %> 課程進度學習表</h3>
+<table class="table table-striped table-study">
+  <colgroup>
+    <col class="light-blue-bg">
+    <col class="">
+    <col class="light-blue-bg">
+    <col class="">
+    <col class="light-blue-bg">
+    <col class="">
+  </colgroup>
+  <tr>
+    <th>每天<br>進度</th>
+    <th>建議<br>完成日期</th>
+    <th>進度</th>
+    <th>課程<br>內容</th>
+    <th>練習<br>
+    <span>完成至少一個模組，才能進行測驗</span></th>
+    <th>測驗記錄 (GPA = <%= @gpa %>)<br>
+    <span>完成至少一個測驗，才能進行下一天的進度</span></th>
+  </tr>
+  <% for i in 0..@study.course.duration_days - 1 do
+    do_link = true
+    due_day = @study.starts_at + i
+    #due_day = due_day.to_datetime
+    last_second = due_day.to_s + ' 23:59:59'
+    due_day = DateTime.parse(last_second)
+    #puts due_day
+    #due_day = due_day.to_s + " 23:59:59"
+    today = Date.today
+    day = i + 1
+    
+    progress_behind = false
+    progress_ahead = false
+    
+    link_reading_str = '內容'
+
+    progresses = @study.progresses
+    completed_date_reading = progresses.where('stage = 1 AND day = ?', day).first
+    completed_date_reading = completed_date_reading.created_at unless completed_date_reading.nil?
+
+    completed_date_practice = progresses.where('stage = 2 AND day = ?', day).first
+    completed_date_practice = completed_date_practice.created_at unless completed_date_practice.nil?
+
+    completed_date_exam = progresses.where('stage = 3 AND day = ?', day).first
+    completed_date_exam = completed_date_exam.created_at unless completed_date_exam.nil?
+
+    unless completed_date_exam.nil?
+      progress_ahead = true if completed_date_exam.to_date < due_day.to_date
+      progress_behind = true if completed_date_exam.to_date > due_day.to_date
+    else
+      progress_behind = true if today > due_day
+    end
+
+    link_reading_str = completed_date_reading.localtime.strftime("%-m / %-d") unless completed_date_reading.nil?
+    #link_reading_str = completed_date_reading.localtime if !completed_date_reading.nil?
+
+
+    status_str = '正常'
+    status_class = 'normal'
+    if progress_behind
+      status_str = '落後' 
+      status_class = 'behind'
+    elsif progress_ahead
+      status_str = '超前' 
+      status_class = 'ahead'
+    end
+    practices = progresses.where('stage = 2 AND day = ?', day)
+    exams = progresses.where('stage = 3 AND day = ?', day)
+    do_link = false if (progresses.where('stage = 3 AND day = ?', day - 1).length == 0 and day > 1)
+    
+  %>
+  <tr class='<%= status_class %>'>
+    <td class="day">第<%= day %>天</td>
+    <td class="suggested-day"><%= due_day.strftime("%-m / %-d")  %></td>
+    <td class="status"><%= status_str %></td>
+    <td class="read">
+      <% if do_link %>
+      <%= link_to link_reading_str, study_read_path(@study.uuid, :day => i + 1) %>
+      <% else %>
+      <%= link_reading_str %>
+      <% end %>
+    </td>
+    <td class="nopadding practice">
+      <table class="practice">
+      <tr>
+        <% for j in 0..2 %>
+        <% do_link = false if j > practices.length || completed_date_reading.nil? %>
+        <td>
+          <% if do_link %>
+          <%= link_to practices[j].nil? ? (j + 1).to_chinese : practices[j].created_at.strftime("%-m / %-d"), study_practice_path(@study.uuid, :day => day, :phase => j) %>
+          <% else %>
+          <%= (j + 1).to_chinese %>
+          <% end %>
+        </td>
+        <% do_link = true %>
+        <% end %>
+        
+      </tr>
+      </table>
+    </td>
+    <td class="nopadding exam">
+      <table>
+        <tr>
+          <td class="exam-date"><%= exams[0].nil? ? ' - ' : exams[0].created_at.strftime("%-m / %-d") %></td>
+          <td class="nopadding">
+            <table class="exam">
+              <% for k in 0..1 %>
+              <% start = k == 0 ? 0 : 6 %>
+              <% ending = k == 0 ? 5 : 11 %>
+              <tr class="<%= 'alpha' if k == 0 %>">
+                <% for j in start..ending %>
+                <% index = j %>
+                <% do_link = false if j > exams.length || practices.length == 0 || !exams[j].nil? %>
+                <td class="exam-result nopadding">
+                  <div class="serial">
+                    <%= index + 1 %>
+                  </div>
+                  <div class="score">
+                  <% if do_link %>
+                    <%= link_to exams[index].nil? ? "測驗" : exams[index].score, study_exam_path(@study.uuid, :day => day, :phase => index) %>
+                  <% else %>
+                    <%= exams[index].nil? ? '-' : exams[index].score %>
+                  <% end %>
+                  </div>
+                </td>
+                <% do_link = true %>
+                <% end %>
+              </tr>
+            <% end %>
+            </table>
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+  <% end %>
+</table>

@@ -17,14 +17,23 @@ class User < ActiveRecord::Base
   # Include default devise modules. Others available are:
   # :token_authenticatable, :confirmable,
   # :lockable, :timeoutable and :omniauthable
-  devise :database_authenticatable, :registerable, :recoverable, :trackable, :validatable, :confirmable
-  #:rememberable, 
+  devise :database_authenticatable, :registerable, :recoverable, :trackable, :validatable, :confirmable, :rememberable
 
   # Setup accessible (or protected) attributes for your model
   attr_accessible :email, :password, :password_confirmation, :roles, :remember_me, :user_profile_attributes
 
   ROLES = %w[admin manager course_manager order_manager user_manager banned]
   # attr_accessible :title, :body
+
+  scope :male, -> {joins(:user_profile).where("user_profiles.gender = 1")}
+  scope :female, -> {joins(:user_profile).where("user_profiles.gender = 0")}
+  scope :birthday_person, -> {
+    #@date = Time.now
+    #this_month = @date.strftime("%-m")
+    #joins(:user_profile).where("MONTH(user_profiles.dob) = ?", this_month )
+    all
+  }
+  scope :everyone, -> {all}
 
   def roles=(roles)
     self.roles_mask = (roles & ROLES).map { |r| 2**ROLES.index(r) }.inject(0, :+)

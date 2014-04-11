@@ -1,6 +1,7 @@
 <%= form_for(resource, :as => resource_name, :url => session_path(resource_name)) do |f| %>
-<legend>登入</legend>
 <fieldset>
+<legend>登入</legend>
+
   <%= f.label :email, "Email" %>
   <%= f.email_field :email, :autofocus => true %>
 
@@ -9,10 +10,10 @@
 
   <% if devise_mapping.rememberable? -%>
     <%= f.label :remember_me do %>
-      <%= f.check_box :remember_me %> 記住我
+      <%= f.check_box :remember_me %> 記住我的登入
     <% end %>
   <% end -%>
-
-  <%= f.submit "登入", :class => "btn btn-primary" %>
+  <button type="submit" class="btn btn-primary">登入</button>
+  
 </fieldset>
 <% end %>

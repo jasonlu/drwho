@@ -23,12 +23,12 @@
 </head>
 <body>
   <div class="center container" id="container">
-    <% unless @ads[:left].nil? %>
-    <div class="banner skyscraper" id="banner-left"><%= @ads[:left].link_tag %></div>
-    <% end %>
-
     <% unless @ads[:right].nil? %>
     <div class="banner skyscraper" id="banner-right"><%= @ads[:right].link_tag %></div>
+    <% end %>
+    
+    <% unless @ads[:left].nil? %>
+    <div class="banner skyscraper" id="banner-left"><%= @ads[:left].link_tag %></div>
     <% end %>
 
   <%= render "common/header" %>

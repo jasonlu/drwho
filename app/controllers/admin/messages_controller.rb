@@ -1,6 +1,5 @@
 class Admin::MessagesController < Admin::BackstageController
   before_action :set_admin_message, only: [:show, :edit, :update, :destroy]
-  @receivers
   
 
   # GET /admin/messages
@@ -33,21 +32,22 @@ class Admin::MessagesController < Admin::BackstageController
   # POST /admin/messages
   def create
     @admin_message = Message.new(admin_message_params)
-    @receiver_ids = Array.new
+    @receiver_users = nil
     if @receivers.include?('everyone')
-      everyone
+      #@receiver_users.push(User.everyone)
+      @receiver_users = User.everyone
     else
-      @receivers.each { |receiver| send(receiver) }
+      @receivers.each do |receiver| 
+        @receiver_users = User.send(receiver)
+      end
     end
-    @receiver_ids.uniq!
-
     
     if @admin_message.save
       message_id = @admin_message.id
-      @receiver_ids.each do |user_id|
-
+      @receiver_users.each do |user|
+        puts user.id
         inbox = Inbox.new
-        inbox.user_id = user_id
+        inbox.user_id = user.id
         inbox.message_id = message_id
         inbox.read = 0
         inbox.save

@@ -1,0 +1,33 @@
+<h2><%= @user.fullname %> 所有課程</h2>
+<table class="table table-striped">
+  <tr class="sortable">
+    <th class="span2 category" data-sorting="category">課程類別</th>
+    <th class="span2 title" data-sorting="title">課程名稱</th>
+    <th class="span2 unit" data-sorting="unit">課程單元</th>
+    <th class="span2 serial" data-sorting="serial">課程編號</th>
+    <th class="span2 starts-at" data-sorting="starts-at">開始上課日期</th>
+    <th class="span2 ends-at" data-sorting="ends-at">結束上課日期</th>
+    <th class="span2" >期末考成績</th>
+    <th class="span2" >通關</th>
+    <th class="span2" >易錯排行榜</th>
+    <th class="span2" >學習紀錄</th>
+  </tr>
+
+<% @studies.each do |study| %>
+  <tr>
+    <td><%= study.course.category.title %></td>
+    <td><%= study.course.title %></td>
+    <td><%= study.course.unit %></td>
+    <td><%= study.course.serial %></td>
+    <td><%= study.starts_at %></td>
+    <td><%= study.ends_at %></td>
+    <td><%= study.score %></td>
+    <td class="<%= study.passed? ? 'success' : 'fail' %>">
+        <%= study.passed? ? '通關' : '失敗' unless study.passed.nil? %>
+    </td>
+    <td><%= link_to '易錯排行榜', admin_study_wrong_list_path(@user, :study_id => study) %></td>
+    <td><%= link_to '學習紀錄', admin_study_record_path(@user, :study_id => study) %></td>
+    
+  </tr>
+<% end %>
+</table>

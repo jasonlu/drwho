@@ -61,18 +61,15 @@ class ApplicationController < ActionController::Base
       @config = session[:config];
     end
 
-    if session[:ad].nil? 
-      
-      @ads = Hash.new
-      @ads[:top_1] = Ad.top_left
-      @ads[:top_2] = Ad.top_right
-      @ads[:left] = Ad.left
-      @ads[:right] = Ad.right
-      
-      #session[:ad] = @ads
-    else
-      @ads = session[:ad]
-    end
+    
+    
+    @ads = Hash.new
+    @ads[:top_1] = Ad.top_l
+    @ads[:top_2] = Ad.top_r
+    @ads[:left] = Ad.left
+    @ads[:right] = Ad.right
+    
+    
   end
 
   def set_cookie

@@ -1,21 +1,17 @@
-<form class="form-search">
-  <div class="input-append">
-    <input type="text" class="span8 search-query" placeholder="User ID" name="user_id" value="<%= @user_id %>">
-    <button type="submit" class="btn">Search</button>
-  </div>
-
-</form>
+<% if(params[:user_id].nil?) %>
+<%= render "user_table" %>
+<% else %>
 
 <div class="order-item">
   <table class="table table-strip">
     <tr class="sortable">   
-      <th class="span2 order-number" data-sorting="order-number" >訂購單編號</th>
-      <th class="category" data-sorting="category">課程分類</th>
+      <th class=" order-number" data-sorting="order-number" >訂購單編號</th>
+      <!-- <th class="category" data-sorting="category">課程分類</th> -->
       <th class="title" data-sorting="title">課程名稱</th>
-      <th class="unit" data-sorting="unit">單元數</th>
-      <th class="span2">上課時間長度</th>
-      <th class="span8">開始上課日期</th>
-      <th class="span8">結束上課日期</th>
+      <!-- <th class="unit" data-sorting="unit">單元數</th> -->
+      <th class="">長度</th>
+      <th class="">開始上課日期</th>
+      <th class="">結束上課日期</th>
       <th class=""></th>
     </tr>
 
@@ -36,13 +32,16 @@
     <% @studies.each do |study| %>
     <tr>
       <td><%= study.user_order.order_number %></td>
-      <td><%= study.course.category.title %></td>
-      <td><%= study.course.title %></td>
-      <td><%= study.course.unit %></td>
+      <td>
+        <%= study.course.title %><br>
+        <%= study.course.category.title %> <br>
+        <%= study.course.unit %> </td>
+      
+      
       <td><%= study.course.duration_days %></td>
-      <td class="span8">
+      <td class="span4">
         <input class="start-day span8" data-duration-days="<%= study.course.duration_days %>" data-id="<%= study.id %>" id="study_<%= study.id %>_starts_at" min="<%= Date.today %>" name="study[<%= study.id %>][starts_at]" type="date" value="<%= study.starts_at %>" />
-      <td class="span8">
+      <td class="span4">
         <input class="end-day span8" id="study_<%= study.id %>_ends_at" name="study[<%= study.id %>][ends_at]" readonly="readonly" type="date" value="<%= study.ends_at %>" />
       </td>
       <td><a data-id="<%= study.id %>" id="study_<%= study.id %>_submit" class="btn btn-primary save" disabled >儲存</a></td>
@@ -54,8 +53,6 @@
   
 
 </div>
-
-
 
 
 
@@ -78,12 +75,14 @@ $(document).ready(function(){
     if (typeof save == undefined) {
       save = false
     } 
+    
     $.ajax({
       url: '?study_id=' + id,
       method: 'patch',
       dataType: 'json',
       data: {starts_at: day, save: save},
       success: function(res){
+        
         $('#study_' + id + '_ends_at').val(res.ends_at);
         $('#study_' + id + '_submit').removeAttr('disabled');
       }
@@ -91,3 +90,4 @@ $(document).ready(function(){
   }
 });
 </script>
+<% end %>

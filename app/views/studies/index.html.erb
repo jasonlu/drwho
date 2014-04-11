@@ -1,2 +1,8 @@
+<% if @studies.length == 0 %>
+<p class="alert alert-information">
+  您沒有進行中的課程
+</p>
+<% else %>
 <h3>您目前進行中的課程</h3>
 <%= render "study_list_table" %>
+<% end %>

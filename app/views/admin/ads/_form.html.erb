@@ -26,7 +26,7 @@
   <%= f.text_field :link %>
 
   <%= f.label :location, '位置' %>
-  <%= f.select :location, {'上1' => 0, '上2' => 1,  '左方' => 2, '右方' => 3} %>
+  <%= f.select :location, {'上1' => 'top_l', '上2' => 'top_r',  '左方' => 'left', '右方' => 'right', '註冊頁' => 'signup', '登入頁' => 'signin'} %>
   <span class="help-block">上方：兩個廣告，234 x 60。左右：120 x 600</span>
 
 </fieldset>
