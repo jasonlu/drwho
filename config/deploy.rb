@@ -119,11 +119,10 @@ namespace :deploy do
   task :symlink_shared, :roles => [:app, :web] do
     run "ln -nfs #{shared_path}/config/database.yml #{release_path}/config/database.yml"
     run "ln -nfs #{shared_path}/config/initializers/secret_token.rb #{release_path}/config/initializers/secret_token.rb"
-    
-    run "ln -nfs #{global_shared_path}/doc/mfg.html #{release_path}/doc/mfg.html"
-    run "ln -nfs #{global_shared_path}/uploads #{release_path}/public/uploads"
-    run "ln -nfs #{global_shared_path}/ckeditor_assets #{release_path}/public/ckeditor_assets"
-    run "ln -nfs #{global_shared_path}/files #{release_path}/public/files"
+
+    run "ln -nfs #{static_shared_path}/uploads #{release_path}/public/uploads"
+    run "ln -nfs #{static_shared_path}/files #{release_path}/public/files"
+    run "ln -nfs #{static_shared_path}/docs #{release_path}/public/docs"
     
     run "ln -nfs #{shared_path}/assets #{release_path}/assets"
     run "ln -nfs #{shared_path}/temp #{release_path}/public/temp"
