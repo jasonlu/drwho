@@ -33,7 +33,7 @@ namespace :db do
   
   desc "Migrate DB"
   task :migrate do
-    run "cd #{current_path} && rake db:migrate RAILS_ENV=#{rails_env}"
+    run "cd #{current_path} && bundle exec rake db:migrate RAILS_ENV=#{rails_env}"
   end
   
   task :dump do
@@ -143,7 +143,7 @@ namespace :deploy do
   end
 
   task :warp10 do
-    run_locally "git add . && git commit -am 'quick_deploy' && git push"
+    run_locally "git add --all . && git commit -am 'quick_deploy' && git push"
     deploy.quick
   end
 end
