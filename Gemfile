@@ -23,8 +23,8 @@ gem 'devise-i18n'
 gem 'thin'
 gem 'country_select', '1.2.0'
 
-# gem 'kaminari'
-# gem 'kaminari-bootstrap'
+gem 'kaminari'
+gem 'kaminari-bootstrap'
 # #gem 'ckeditor_rails'
 # gem "paperclip"
 # gem "seed_dump"

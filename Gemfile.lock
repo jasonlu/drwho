@@ -60,6 +60,12 @@ GEM
     jquery-ui-rails (4.0.3)
       jquery-rails
       railties (>= 3.1.0)
+    kaminari (0.15.1)
+      actionpack (>= 3.0.0)
+      activesupport (>= 3.0.0)
+    kaminari-bootstrap (3.0.1)
+      kaminari (>= 0.13.0)
+      rails
     magic_encoding (0.0.2)
     mail (2.5.4)
       mime-types (~> 1.16)
@@ -139,6 +145,8 @@ DEPENDENCIES
   devise-i18n
   jquery-rails
   jquery-ui-rails
+  kaminari
+  kaminari-bootstrap
   magic_encoding
   mysql2
   protected_attributes
