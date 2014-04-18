@@ -25,18 +25,7 @@ class ApplicationController < ActionController::Base
     @sorting_class = sorting_class
   end
 
-  def after_sign_in_path_for(resource)
-    session_id = request.session_options[:id]
-    user_id = current_user.id
-    carts = Cart.where("session_id = ?", session_id).update_all(:user_id => user_id)
-
-    if current_user.user_profile.nil? || current_user.user_profile.firstname.blank?
-      '/profile/edit'
-    else
-      '/'
-    end
-
-  end
+  
 
   def check_profile
 
@@ -50,16 +39,16 @@ class ApplicationController < ActionController::Base
 
   def load_config
     
-    if session[:config].nil?
-      site_configs = SiteConfig::all
-      @config = Hash.new
-      site_configs.each do |config|
-        @config[config.key.to_sym] = config.value
-      end
-      session[:config] = @config
-    else
-      @config = session[:config];
-    end
+    # if session[:config].nil?
+    #   site_configs = SiteConfig::all
+    #   @config = Hash.new
+    #   site_configs.each do |config|
+    #     @config[config.key.to_sym] = config.value
+    #   end
+    #   session[:config] = @config
+    # else
+    #   @config = session[:config];
+    # end
 
     
     

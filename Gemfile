@@ -18,25 +18,21 @@ gem 'protected_attributes'
   gem 'uglifier', '>= 1.0.3'
 #end
 
-
-
-
-
 gem "devise", "3.0.0.rc"
 gem 'devise-i18n'
-
-gem 'kaminari'
-gem 'kaminari-bootstrap'
-#gem 'ckeditor_rails'
-gem "paperclip"
-gem 'ckeditor'
-gem "seed_dump"
-
 gem 'thin'
-gem 'country_select'
-gem 'by_star', :git => "git://github.com/radar/by_star"
-gem 'rubyzip', '< 1.0.0'
-gem 'roo'
+gem 'country_select', '1.2.0'
+
+# gem 'kaminari'
+# gem 'kaminari-bootstrap'
+# #gem 'ckeditor_rails'
+# gem "paperclip"
+# gem "seed_dump"
+
+
+#gem 'by_star', :git => "git://github.com/radar/by_star"
+#gem 'rubyzip', '< 1.0.0'
+#gem 'roo'
 
 
 #gem 'sunspot_rails'
@@ -53,7 +49,7 @@ group :production do
   
 end
 
-gem 'cancan'
+#gem 'cancan'
 
 
 # To use ActiveModel has_secure_password

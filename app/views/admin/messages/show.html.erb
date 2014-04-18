@@ -1,9 +1,0 @@
-<p id="notice"><%= notice %></p>
-
-<h1><%= @admin_message.subject %></h1>
-<%= @admin_message.sender.fullname %>
-<%= @admin_message.content.html_safe %>
-
-
-<%= link_to 'Edit', edit_admin_message_path(@admin_message) %> |
-<%= link_to 'Back', admin_messages_path %>
