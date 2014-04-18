@@ -39,17 +39,11 @@ class ApplicationController < ActionController::Base
 
   def load_config
     
-    # if session[:config].nil?
-    #   site_configs = SiteConfig::all
-    #   @config = Hash.new
-    #   site_configs.each do |config|
-    #     @config[config.key.to_sym] = config.value
-    #   end
-    #   session[:config] = @config
-    # else
-    #   @config = session[:config];
-    # end
-
+    site_configs = SiteConfig::all
+    @config = Hash.new
+    site_configs.each do |config|
+      @config[config.key.to_sym] = config.value
+    end
     
     
     @ads = Hash.new
