@@ -26,7 +26,7 @@
     </div>
   </li>
 </ul>
-<%= link_to study_path(@study), :class => "btn btn" do %>
+<%= link_to study_path(@study.uuid), :class => "btn btn" do %>
   <i class="icon-arrow-left"></i> 完成學習內容，回到課程進度學習表
 <% end %>
 <%= link_to study_practice_path(:uuid => @study.uuid, :day => params[:day], :phase => 0), :class => "btn btn pull-right" do %>

@@ -1,7 +1,8 @@
 source 'https://rubygems.org'
 gem 'rails', '4.0.0'
 gem 'rails-i18n'
-
+gem 'mysql2'
+gem 'thin'
 gem 'protected_attributes'
 
 
@@ -20,31 +21,21 @@ gem 'protected_attributes'
 
 gem "devise", "3.0.0.rc"
 gem 'devise-i18n'
-gem 'thin'
+
 gem 'country_select', '1.2.0'
 
 gem 'kaminari'
-gem 'kaminari-bootstrap'
-# #gem 'ckeditor_rails'
-# gem "paperclip"
-# gem "seed_dump"
+gem 'kaminari-bootstrap', '~> 0.1.3'
 
-
-#gem 'by_star', :git => "git://github.com/radar/by_star"
-#gem 'rubyzip', '< 1.0.0'
-#gem 'roo'
-
-
-#gem 'sunspot_rails'
 
 group :development do
-  #gem 'sunspot_solr' # optional pre-packaged Solr distribution for use in development
+
   gem 'capistrano'
   gem 'magic_encoding'
-  #gem 'sqlite3'
+
   gem 'quiet_assets'
 end
-gem 'mysql2'
+
 group :production do
   
 end

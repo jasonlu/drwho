@@ -1,11 +1,14 @@
-<div class="hero-unit"><%= @mfg.html_safe %>
+<% if !@mfg.blank? %>
+<div class="hero-unit">
+  <%= @mfg.html_safe %>
 </div>
+<% end %>
 
 <% @news.each do  |news| %>
-
 <div class="page-header">
-  <h1><%= news.title %><br><small><%= news.created_at.localtime.to_date %></small></h1>
-  
+  <h3 class="pull-left"><%= news.title %></h3>
+  <h3 class="pull-right"><small><%= news.created_at.localtime.to_date %></small></h3>
+  <div class="clear" style="clear:both;"></div>
 </div>
 <p>
   <%= simple_format(news.content) %>

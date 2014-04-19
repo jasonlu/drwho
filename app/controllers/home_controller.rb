@@ -1,7 +1,12 @@
 class HomeController < ApplicationController
   def welcome
-    File.open(File.join(Rails.root, "public", "docs", "mfg.html"), "r+") do |f|
-      @mfg = f.read
+    path = File.join(Rails.root, "public", "docs", "mfg.html")
+    if File.file?(path)
+      File.open(path, "r+") do |f|
+        @mfg = f.read
+      end
+    else
+      @mfg = ""
     end
 
     @news = News.letest.limit(3)
