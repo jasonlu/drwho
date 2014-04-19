@@ -3,7 +3,7 @@ class SelfLearningsController < ApplicationController
   before_filter :select_learning_object, :only => [:show, :exam, :exam_result, :edit]
 
   def select_learning_object
-
+    @current_section = "account"
     @learnings = SelfLearning.where(:grouping_id => params[:grouping_id]).order("'order' ASC").all
   end
 
@@ -21,6 +21,7 @@ class SelfLearningsController < ApplicationController
 
 
   def index
+    @current_section = "account"
     sort = params[:sort]
     dir = params[:dir]
 

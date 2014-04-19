@@ -63,7 +63,7 @@ Drwho::Application.routes.draw do
   get 'study/self_learning/:grouping_id/edit', :to => 'self_learnings#edit', :as => :self_learning_edit
 
   get 'study/records', :to => 'studies#all_records', :as => :study_all_records
-  get 'study/records/:id', :to => 'studies#record', :as => :study_records
+  get 'study/records/:uuid', :to => 'studies#record', :as => :study_records
 
   patch 'study/set_start_day/:uuid', :to => 'studies#set_start_day'
   get "study/set_start_day", :to => 'studies#set_start_day', :as => :set_start_day

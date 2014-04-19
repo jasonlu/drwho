@@ -10,7 +10,7 @@
     <th class="span" >期末考成績</th>
     <th class="span" >通關</th>
     <th class="span" >易錯排行榜</th>
-    <th class="span" >學習紀錄</th>
+    <!-- <th class="span" >學習紀錄</th> -->
   </tr>
 
 <% @studies.each do |study| %>
@@ -27,7 +27,7 @@
         <%= study.passed? ? '通關' : '失敗' unless study.passed.nil? %>
     </td>
     <td><%= link_to '易錯排行榜', study_hardests_path(:uuid => study.uuid) %></td>
-    <td><%= link_to '學習紀錄', study_records_path(study) %></td>
+    <!-- <td><%= link_to '學習紀錄', study_records_path(study.uuid) %></td> -->
     
   </tr>
 <% end %>

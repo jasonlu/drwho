@@ -7,7 +7,7 @@
     <li class="<%= 'active' if @current_section == 'pages_contact_us' %>"><%= link_to "聯絡我們", "/pages/contact_us" %></li>
 
     <% if user_signed_in? %>
-    <li class="<%= 'active' if controller.controller_name == 'studies' %>"><%= link_to "上課去", studies_path, :style => 'color:red;' %></li>
+    <li class="<%= 'active' if @current_section == 'studies' %>"><%= link_to "上課去", studies_path, :style => 'color:red;' %></li>
     <li class="dropdown <%= 'active' if @current_section == 'account' %>">
       <%= link_to "#", :class => "dropdown-toggle", :data => {:toggle => "dropdown"} do %>
         我的帳戶<b class="caret"></b>

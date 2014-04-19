@@ -36,7 +36,8 @@ class StudiesController < ApplicationController
   end
 
   def record
-    @records = @studies.study_records.select('course_item_id, count(*) AS cnt, course_id, study_id').group('course_id').order('cnt DESC')
+    @user = current_user
+    @records = @study.study_records.select('course_item_id, count(*) AS cnt, course_id, study_id').group('course_id').order('cnt DESC')
     
     render 'record_courses'
   end
@@ -230,6 +231,7 @@ class StudiesController < ApplicationController
   end
 
   def hardests
+    @current_section = 'studies'
     if(params[:uuid] == 'all')
       #@records = StudyRecord.select('course_item_id, count(*) AS cnt, course_id, study_id').where(:user_id => current_user.id).group('course_item_id').order('cnt DESC')
       @records = current_user.study_records.select('course_item_id, count(*) AS cnt, course_id, study_id').group('course_item_id').order('cnt DESC')
@@ -254,6 +256,7 @@ class StudiesController < ApplicationController
 
 :private
   def select_studies
+    @current_section = 'studies'
     sort = params[:sort]
     dir = params[:dir]
 
@@ -311,6 +314,7 @@ class StudiesController < ApplicationController
   end
 
   def select_study
+    @current_section = 'studies' 
     @ended = false
     @study = current_user.studies.where("uuid = ?", params[:uuid]).first
     #@study = current_user.studies.find(params[:id])
