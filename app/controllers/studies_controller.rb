@@ -19,6 +19,7 @@ class StudiesController < ApplicationController
   end
 
   def all_records
+    @current_section = 'account'
     now = Time.now
     @studies = @studies.where('ends_at <= ?', now)
     
