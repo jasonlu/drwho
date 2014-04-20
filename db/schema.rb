@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140410230133) do
+ActiveRecord::Schema.define(version: 20140420024125) do
 
   create_table "ads", force: true do |t|
     t.text     "content"
@@ -214,9 +214,19 @@ ActiveRecord::Schema.define(version: 20140410230133) do
     t.datetime "updated_at"
     t.integer  "stage"
     t.integer  "phase"
+    t.boolean  "wrong"
   end
 
   create_table "test", force: true do |t|
+  end
+
+  create_table "upload_files", force: true do |t|
+    t.string   "title"
+    t.string   "type"
+    t.string   "path"
+    t.integer  "size"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "user_orders", force: true do |t|

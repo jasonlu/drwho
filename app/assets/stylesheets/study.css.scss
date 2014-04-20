@@ -98,6 +98,13 @@
 
   }
 }
+.wrong-answer {
+  color: $danger;
+}
+
+.correct-answer {
+  color: $success;
+}
 
 .self_learnings-block {
   input.wrong {

@@ -3,11 +3,6 @@ class StudiesController < ApplicationController
   before_filter :check_profile
   before_filter :select_studies, :only => [:index, :all_records]
   before_filter :select_study, :only => [:show, :record, :read, :practice, :exam, :compare_result]
-  # GET /studies
-  # GET /studies.json
-
-
-  
 
   def index
     now = Time.now
@@ -18,18 +13,7 @@ class StudiesController < ApplicationController
     end
   end
 
-  def all_records
-    @current_section = 'account'
-    now = Time.now
-    @studies = @studies.where('ends_at <= ?', now)
-    
-    render 'record_all'
-  end
-
-  # GET /studies/1
-  # GET /studies/1.json
   def show
-
     respond_to do |format|
       format.html # show.html.erb
       format.json { render json: @study }
@@ -39,11 +23,16 @@ class StudiesController < ApplicationController
   def record
     @user = current_user
     @records = @study.study_records.select('course_item_id, count(*) AS cnt, course_id, study_id').group('course_id').order('cnt DESC')
-    
     render 'record_courses'
   end
 
-
+  def all_records
+    @current_section = 'account'
+    now = Time.now
+    @studies = @studies.where('ends_at <= ?', now)
+    
+    render 'record_all'
+  end
 
   def practice
     
@@ -73,7 +62,6 @@ class StudiesController < ApplicationController
   end
 
   def exam
-    
     @day = params[:day].to_i
     @phase = params[:phase].to_i
     @course_items = @study.course.course_items.where('day = ?', @day)
@@ -103,26 +91,33 @@ class StudiesController < ApplicationController
       render 'practice_1'
     when 2, 5, 8, 11
       render 'practice_2'
+    end
+  end
 
+  def exam_submit
+    @type = 'exam'
+    @phase = params[:phase].to_i
+    if compare_result(3)
+      redirect_to study_practice_result_path(:uuid => params[:uuid], :day => params[:day], :phase => params[:phase])
     end
   end
 
   def practice_submit
     @type = 'practice'
     @phase = params[:phase].to_i
-    compare_result(2)
-
-    #redirect_to @study
-    render 'practice_result'
+    if compare_result(2)
+      redirect_to study_practice_result_path(:uuid => params[:uuid], :day => params[:day], :phase => params[:phase])
+    end
   end
 
-  def exam_submit
-    @type = 'exam'
-    @phase = params[:phase].to_i
-    compare_result(3)
+  def exam_result
+    stage = 3
+    get_result(stage)
+  end
 
-    #redirect_to @study
-    render 'practice_result'
+  def practice_result
+    stage = 2
+    get_result(stage)
   end
 
   def read
@@ -182,55 +177,6 @@ class StudiesController < ApplicationController
     end
   end
 
-  def compare_result(stage)
-    @study = current_user.studies.where("uuid = ?", params[:uuid]).first
-    @day = params[:day]
-    
-    course_ids = Array.new
-    @results = Hash.new
-    
-    total_questions = params[:course_items].length.to_i
-    
-    phase = params[:phase].to_i
-    total_wrongs = 0.0
-    params[:course_items].each do |key, value|
-      course_ids.push(key.to_i)
-      ci = CourseItem.find(key.to_i)
-      #wrong = ci.question.downcase.gsub(/[^0-9a-z]/i, '') != value.downcase.gsub(/[^0-9a-z]/i, '')  ? true : false
-      wrong = ci.question != value ? true : false
-      value = '__' if value == ''
-      result = {:content => value, :wrong? => wrong}
-      @results[key.to_i] = result
-
-      if wrong
-        StudyRecord.create(
-          :user_id => current_user.id,
-          :course_item_id => key.to_i,
-          :content => value,
-          :study_id => @study.id,
-          :course_id => @study.course_id,
-          :stage => stage,
-          :phase => phase
-        )
-        total_wrongs += 1
-      end
-      @score = (1 - total_wrongs / total_questions) * 100
-      @score = @score.round(0)
-    end
-    @course_items = CourseItem.where(:id => course_ids)#.order("FIELD(id, (?))", course_ids)
-
-    Progress.create(
-      :user_id => current_user.id,
-      :course_item_id => 0,
-      :study_id => @study.id,
-      :course_id => @study.course_id,
-      :stage => stage,
-      :phase => phase,
-      :day => @day,
-      :score => @score
-    )
-  end
-
   def hardests
     @current_section = 'studies'
     if(params[:uuid] == 'all')
@@ -250,12 +196,96 @@ class StudiesController < ApplicationController
   end
 
 
-
-
-  
-
-
 :private
+
+  def compare_result(stage)
+    @study = current_user.studies.where("uuid = ?", params[:uuid]).first
+    @day = params[:day]
+    @phase = params[:phase].to_i
+    @progress = Progress.where(
+      :user_id => current_user.id,
+      :study_id => @study.id,
+      :course_id => @study.course_id,
+      :stage => stage,
+      :phase => @phase,
+      :day => @day,
+    ).first
+
+    unless @progress.nil?
+      redirect_to study_practice_result_path
+      return false
+    end
+
+    course_ids = Array.new
+    @results = Hash.new
+    
+    total_questions = params[:course_items].length.to_i
+    total_wrongs = 0.0
+
+    params[:course_items].each do |key, value|
+      course_ids.push(key.to_i)
+      ci = CourseItem.find(key.to_i)
+      #wrong = ci.question.downcase.gsub(/[^0-9a-z]/i, '') != value.downcase.gsub(/[^0-9a-z]/i, '')  ? true : false
+      wrong = ci.question != value ? true : false
+      value = '__' if value == ''
+      #result = {:content => value, :wrong? => wrong}
+      #@results[key.to_i] = result
+      StudyRecord.create(
+        :user_id => current_user.id,
+        :course_item_id => key.to_i,
+        :content => value,
+        :study_id => @study.id,
+        :course_id => @study.course_id,
+        :wrong => wrong,
+        :stage => stage,
+        :phase => @phase
+      )
+      if wrong
+        total_wrongs += 1
+      end
+      @score = (1 - total_wrongs / total_questions) * 100
+      @score = @score.round(0)
+    end
+    #@course_items = CourseItem.where(:id => course_ids)#.order("FIELD(id, (?))", course_ids)
+
+    Progress.create(
+      :user_id => current_user.id,
+      :course_item_id => 0,
+      :study_id => @study.id,
+      :course_id => @study.course_id,
+      :stage => stage,
+      :phase => @phase,
+      :day => @day,
+      :score => @score
+    )
+  end
+
+  def get_result(stage)
+    @study = current_user.studies.where("uuid = ?", params[:uuid]).first
+    @day = params[:day]
+    @phase = params[:phase].to_i
+    @progress = Progress.where(
+      :user_id => current_user.id,
+      :study_id => @study.id,
+      :course_id => @study.course_id,
+      :stage => stage,
+      :phase => @phase,
+      :day => @day,
+    ).order("id ASC").last
+    if @progress.nil?
+      redirect_to study_path params[:uuid]
+      return
+    end
+    @study_records = StudyRecord.where(
+      :user_id => current_user.id,
+      :study_id => @study.id,
+      :course_id => @study.course_id,
+      :stage => stage,
+      :phase => @phase
+    ).order("id ASC").all
+    @score = @progress.score
+  end
+
   def select_studies
     @current_section = 'studies'
     sort = params[:sort]
@@ -290,8 +320,6 @@ class StudiesController < ApplicationController
         Study.find(study.id).update(:score => study.score, :passed => study.passed)
       end
     end
-
-
   end
 
   def caculate_score(study_id)
@@ -332,9 +360,6 @@ class StudiesController < ApplicationController
     else 
       @gpa = @study.score
     end
-
   end
-
- 
     
 end

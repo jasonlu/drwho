@@ -20,6 +20,14 @@
   <% unless @sorting_class.blank? %>
   <meta name="sorting" content="<%= @sorting_class %>" >
   <% end %>
+
+  <style type="text/css" media="print">
+    html, body { margin: 0; padding: 0; }
+    body { height: 11in;  width: 8.5in; }
+    footer { position: absolute; bottom: 0; }
+  </style> 
+
+
 </head>
 <body>
   <div class="container center div14">
@@ -44,7 +52,7 @@
       </section>
     </div>
 
-    <footer style="position: fixed; bottom:0;" class="div14">列印時間：<%= Time.now %></footer>
+    <footer style="position: absolute; bottom:0;" class="div14">列印時間：<%= Time.now.strftime("%-Y / %-m / %-d %-H:%M:%S") %></footer>
   </div>
 </body>
 </html>

@@ -2,7 +2,6 @@ class UserOrdersController < ApplicationController
   skip_before_filter :verify_authenticity_token
   before_filter :authenticate_user!
 
-
   # GET /user_orders
   # GET /user_orders.json
   def index
@@ -29,10 +28,7 @@ class UserOrdersController < ApplicationController
 
   # GET /user_orders/1
   # GET /user_orders/1.json
-  def show
-
-    
-
+  def show 
     @user_order = UserOrder.where('order_number = ? AND user_id = ?', params[:order_number], current_user.id).first
     @order_number = params[:order_number]
     @courses = Course.find(@user_order.courses.split(','))
@@ -79,53 +75,6 @@ class UserOrdersController < ApplicationController
 
     @courses = Course.find(courses_array)
     return redirect_to user_order_path(order_number)
-    
-    #render :template => 'show'
-    #respond_to do |format|
-    #  format.html { render :template => 'show' }
-    #  format.json { render json: @user_order }
-    #end
   end
 
-  # DELETE /user_orders/1
-  # DELETE /user_orders/1.json
-  def destroy
-    @user_order = UserOrder.find(params[:id])
-    @user_order.destroy
-
-    respond_to do |format|
-      format.html { redirect_to user_orders_url }
-      format.json { head :no_content }
-    end
-  end
-
-  def set_start_day
-    sort = params[:sort]
-    dir = params[:dir]
-
-    case sort
-    when 'price'
-      sort = 'payment_price'
-    when 'order_number', 'id', 'created_at'
-    when 'title'
-      sort = 'courses.title'
-    when 'category'
-      sort = 'categories.title'
-    else
-      sort = 'order_number'
-    end
-    @current_section = 'account'
-    @studies = current_user.studies.where("starts_at > ? OR starts_at IS NULL", Date.today).joins(:user_order).joins(:course).joins(:category).order(sort + ' ' + dir).page(params[:page])
-    #@studies = current_user.studies.joins(:user_order).joins(:course).joins(:category).order(sort + ' ' + dir).page(params[:page])
-    #@orders = UserOrder.where('user_id = ? AND payment_status = 1', current_user.id)
-    #@course_ids = Array.new
-    #@orders.each do |order|
-    #  @course_ids.concat(order.courses.split(','))
-    #end
-    
-    #@courses = Course.where(:id => @course_ids)
-
-  
-
-  end
 end

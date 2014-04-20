@@ -49,8 +49,6 @@ Drwho::Application.routes.draw do
   get 'order/:order_number', :to => 'user_orders#show', :as => :user_order
 
 
-
-
   get 'study/self_learnings', :to => 'self_learnings#index', :as => :self_learnings
   post 'study/self_learnings', :to => 'self_learnings#create'
   get 'study/self_learning/new', :to => 'self_learnings#new', :as => :self_learning_new
@@ -68,22 +66,23 @@ Drwho::Application.routes.draw do
   patch 'study/set_start_day/:uuid', :to => 'studies#set_start_day'
   get "study/set_start_day", :to => 'studies#set_start_day', :as => :set_start_day
 
-  get 'study/read/:uuid/:day', :to => 'studies#read', :as => :study_read
-  get 'study/practice/:uuid/:day/phase/:phase', :to => 'studies#practice', :as => :study_practice
-  post 'study/practice/:uuid/:day/phase/:phase', :to => 'studies#practice_submit'
-  get 'study/exam/:uuid/:day/phase/:phase', :to => 'studies#exam', :as => :study_exam
-  post 'study/exam/:uuid/:day/phase/:phase', :to => 'studies#exam_submit'
+  get 'study/read/:uuid/day/:day', :to => 'studies#read', :as => :study_read
+  post 'study/practice/:uuid/day/:day/phase/:phase/result', :to => 'studies#practice_submit'
+  get 'study/practice/:uuid/day/:day/phase/:phase/result', :to => 'studies#practice_result', :as => :study_practice_result
+  get 'study/practice/:uuid/day/:day/phase/:phase', :to => 'studies#practice', :as => :study_practice
+  
+  post 'study/exam/:uuid/day/:day/phase/:phase/result', :to => 'studies#exam_submit'
+  get 'study/exam/:uuid/day/:day/phase/:phase/result', :to => 'studies#exam_result', :as => :study_exam_result
+  get 'study/exam/:uuid/day/:day/phase/:phase', :to => 'studies#exam', :as => :study_exam
+  
   get 'study/hardests/:uuid(/course/:course_id)', :to => 'studies#hardests', :as => :study_hardests
   get 'study/:uuid', :to => 'studies#show', :as => :study
   get 'study', :to => 'studies#index', :as => :studies
 
-  resources :user_orders
-  resources :courses
-  #resources :click_records
+  resources :user_orders, :only => [:index, :show, :new]
+  resources :courses, :only => [:index, :show]
 
   get 'portal/:id', :to => 'ads#go', :as => :portal
   root :to => 'home#welcome'
-
-  
 
 end
