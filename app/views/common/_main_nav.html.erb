@@ -14,16 +14,17 @@
       <% end %>
       <ul class="dropdown-menu">
         <!-- links -->
-
         <li class="block-1"><%= link_to "購物車", cart_path %></li>
         <li class="block-1"><%= link_to "歷史訂單", user_orders_path %></li>
         <li class="block-1"><%= link_to "選開課日", set_start_day_path %></li>
-         
-        <li class="block-2"><%= link_to "易錯排行榜", study_hardests_path('all') %></li>
+        <li class="divider"></li>
+        <li class="nav-header">易錯排行榜</li>
+        <li class="block-2"><%= link_to "全部問題易錯排行榜", study_hardests_path('all') %></li>
+        <li class="block-2"><%= link_to "課程易錯排行榜", study_hardests_path('course') %></li>
+        <li class="divider"></li>
         <li class="block-2"><%= link_to "學習記錄", study_all_records_path %></li>
-         
         <li class="block-3"><%= link_to "自我學習", study_self_learnings_path %></li>
- 
+        <li class="divider"></li> 
         <li class="block-4"><%= link_to "個人訊息", inbox_path %></li>
         <li class="block-4"><%= link_to "個人資料", profile_path %></li>
         

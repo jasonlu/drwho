@@ -1,30 +1,32 @@
 
 <table class="table table-striped">
   <tr class="sortable">
-    <th class="span1 category" data-sorting="category" data-jump="courses">類別</th>
-    <th class="span1 unit" data-sorting="unit" data-jump="courses">單元</th>
-    <th class="span2 title" data-sorting="title" data-jump="courses">標題</th>
-    <th class="briefing" data-sorting="briefing" data-jump="courses">簡介</th>
+    <th class="span2 category" data-sorting="category" data-jump="courses">課程類別</th>
+    <th class="span2 title" data-sorting="title" data-jump="courses">課程名稱</th>
+    <th class="span2 unit" data-sorting="unit" data-jump="courses">課程單元</th>
+    
+    <th class="briefing" data-sorting="briefing" data-jump="courses">課程簡介</th>
     <th class="span1 price" data-sorting="price" data-jump="courses">售價</th>
     <th class="span2 duration-days" data-sorting="duration-days" data-jump="courses">課程長度</th>
-    <th class="span3"></th>
+    <th class="span1"></th>
   </tr>
 <% @courses.each do |course| %>
   <tr>
     
-    <td><%= course.category.title %></td>
-    <td><%= course.unit %></td>
-    <td><%= course.title %></td>
-    
-    <td class="briefing"><%= simple_format(course.briefing) %></td>
+    <td><%= link_to course.category.title, course_path(course) %></td>
+    <td><%= link_to course.title, course_path(course)  %></td>
+    <td><%= link_to course.unit, course_path(course)  %></td>
+    <td class="briefing">
+      <%= link_to simple_format(course.briefing), course_path(course) %>
+    </td>
     
     <td><span class="price pull-right"><%= course.price.to_i %></span></td>
     <td><%= course.duration_days %> 天</td>
     
     <td>
-      <a class="btn-small btn" href="<%= course_path(course) %>"><i class="icon-eye-open">&nbsp;</i> 檢視</a>
+      
       <% disabled = " disabled='disabled' " unless course.can_signup? %>
-      <a <%= disabled %> class="add-to-cart btn-small btn" data-id="<%= course.id %>" href="#"><i class="icon-shopping-cart">&nbsp;</i> 加入購物車</a>
+      <a <%= disabled %> class="add-to-cart btn-small btn" data-id="<%= course.id %>" href="#"><i class="icon-shopping-cart">&nbsp;</i> </a>
     </td>
 
   </tr>

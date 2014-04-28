@@ -5,22 +5,25 @@
 <table class="table">
   <tr class="">
     <th class="span1"></th>
-    <th class="span4">英文</th>
-    <th>詞性</th>
     <th class="span4">中文</th>
+    <th>詞性</th>
+    <th class="span4">英文</th>
+    
   </tr>
   <% number = 0 %>
   <% @learnings.each do |lrn| %>
   <% number = number + 1 %>
   <tr class="">
     <td class="span1"><%= number %></td>
-    <td class="span4"><%= lrn.original %></td>
+    
+    <td class="span4"><%= lrn.translation %></td>
     <td><%= lrn.word_type %></td>
+
     <td class="span4">
       
       <%= text_field_tag "answers[#{lrn.id.to_s}][text]", @answers[lrn.id.to_s].text, :class => "#{@answers[lrn.id.to_s].is_correct ? "correct" : "wrong" } input" %>
       <%= hidden_field_tag "answers[#{lrn.id.to_s}][id]", lrn.id %>
-      <%= hidden_field_tag "right_answer[#{lrn.id.to_s}]", lrn.translation %>
+      <%= hidden_field_tag "right_answer[#{lrn.id.to_s}]", lrn.original %>
       
     </td>
   </tr>

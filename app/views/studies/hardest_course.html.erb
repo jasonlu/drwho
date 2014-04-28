@@ -1,0 +1,64 @@
+<h3>易錯排行榜</h3>
+<h4>各課程易錯排行</h4>
+
+<% if @records.length == 0 %>
+<p class="alert alert-info">您沒有任何錯誤，真是太棒了！</p>
+<% else %>
+
+<table class="table table-striped">
+  <tr class="row">
+    <th class="span2">課程分類</th>
+    <th>課程名稱</th>
+    <th class="span2">單元數</th>
+    <th class="span2">課程編號</th>
+    <th class="span2">測驗錯誤次數</th>
+    <th>易錯排行榜</th>
+  </tr>
+  <% @records.each do |record| %>
+  <% study_id = record.study.uuid %>
+  <tr class="row">
+    <td class=""><%= record.course.category.title %></td>
+    <td class=""><%= record.course.title %></td>
+    <td class=""><%= record.course.unit %></td>
+    <td class=""><%= record.course.serial %></td>
+
+    <td class="span2"><%= record.cnt %></td>
+    <td class="span2"><%= link_to "易錯排行榜", study_hardests_path(study_id, record.course_id) %></td>
+    
+  </tr>
+  <% end %>
+</table>
+<% end %>
+
+<%= link_to :back, :class => "btn" do %>
+<i></i> 返回 
+<% end %>
+
+
+<!--
+<h1>易錯排行榜</h1>
+<h2>單一課程易錯排行榜</h2>
+
+<table class="table table-striped">
+  <tr class="row">
+    <th class="span2">課程分類</th>
+    <th >課程名稱</th>
+    <th class="span2">單元數</th>
+    <th class="span2">課程編號</th>
+    <th class="span2">易錯排行榜</th>
+    
+  </tr>
+  <% @records.each do |record| %>
+  <% study_id = record.study_id %>
+  <tr class="row">
+    <td class=""><%= record.course.category.title %></td>
+    <td class=""><%= record.course.title %></td>
+    <td class=""><%= record.course.unit %></td>
+    <td class=""><%= record.course.serial %></td>
+
+    <td class="span2"><%= link_to '易錯排行榜', '#' %></td>
+    
+  </tr>
+  <% end %>
+</table>
+-->

@@ -66,7 +66,8 @@ class SelfLearningsController < ApplicationController
     for i in 0..@learnings.length - 1
       
       id = @learnings[i].id
-      right_answer = @learnings[i].translation
+      #right_answer = @learnings[i].translation
+      right_answer = @learnings[i].original
       user_answer = params[:answers][id.to_s]
       
       obj = OpenStruct.new

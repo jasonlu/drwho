@@ -7,10 +7,11 @@
     <th class="span starts-at" data-sorting="starts-at">開始上課日期</th>
     <th class="span ends-at" data-sorting="ends-at">結束上課日期</th>
     <th class="span danger" ><%= params[:action] == 'all_records' ? '學習記錄' : '上課去' %></th>
+    <% if params[:action] != 'index' %>
     <th class="span" >期末考成績</th>
     <th class="span" >通關</th>
+    <% end %>
     <th class="span" >易錯排行榜</th>
-    <!-- <th class="span" >學習紀錄</th> -->
   </tr>
 
 <% @studies.each do |study| %>
@@ -31,13 +32,13 @@
         %>
         
     </td>
+    <% if params[:action] != 'index' %>
     <td><%= study.score %></td>
     <td class="<%= study.passed? ? 'success' : 'fail' %>">
         <%= study.passed? ? '通關' : '失敗' unless study.passed.nil? %>
     </td>
-    <td><%= link_to '易錯排行榜', study_hardests_path(:uuid => study.uuid) %></td>
-    <!-- <td><%= link_to '學習紀錄', study_records_path(study.uuid) %></td> -->
-    
+    <% end %>
+    <td><%= link_to '易錯排行榜', study_hardests_path(:uuid => study.uuid, :course_id => study.course_id) %></td>
   </tr>
 <% end %>
 </table>

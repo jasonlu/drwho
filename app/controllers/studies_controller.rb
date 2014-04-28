@@ -178,20 +178,28 @@ class StudiesController < ApplicationController
   end
 
   def hardests
-    @current_section = 'studies'
+    @current_section = 'account'
+    
+    @records = current_user.study_records.where(:wrong => 1, :stage => 3).select('course_item_id, count(*) AS cnt, course_id, study_id').order('cnt DESC')
+    # All
     if(params[:uuid] == 'all')
-      #@records = StudyRecord.select('course_item_id, count(*) AS cnt, course_id, study_id').where(:user_id => current_user.id).group('course_item_id').order('cnt DESC')
-      @records = current_user.study_records.select('course_item_id, count(*) AS cnt, course_id, study_id').group('course_item_id').order('cnt DESC')
-      render 'hardest_questions'
-    elsif(params[:course_id].nil?)
-      @study = current_user.studies.where(:uuid => params[:uuid]).first
-      @records = @study.study_records.select('course_item_id, count(*) AS cnt, course_id, study_id').group('course_item_id').order('cnt DESC')
-      render 'hardest_questions'
+      @records = @records.group('course_item_id')
+      render 'hardest_all'
+    elsif(params[:uuid] == 'course')
+      @records = @records.group('course_id')
+      render 'hardest_course'
+
+    # Course  
+    elsif(!params[:course_id].nil?)
+      @course = Course.find(params[:course_id])
+      @records = @records.where(:course_id => @course.id).group('course_item_id')
+      render 'hardest_question'
     else
-      @study = current_user.studies.where(:uuid => params[:uuid]).first
-      @records = @study.study_records.select('course_item_id, count(*) AS cnt, course_id, study_id').group('course_id').order('cnt DESC')
-      #@records = StudyRecord.select('course_item_id, count(*) AS cnt, course_id, study_id').where(:study_id => params[:id], :user_id => current_user.id).group('course_id').order('cnt DESC')
-      render 'hardest_courses'
+      # @study = current_user.studies.where(:uuid => params[:uuid]).first
+      # @records = @study.study_records.select('course_item_id, count(*) AS cnt, course_id, study_id').group('course_item_id').order('cnt DESC')
+      # render 'hardest_all'
+
+      
     end
   end
 

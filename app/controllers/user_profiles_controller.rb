@@ -1,15 +1,13 @@
-class UserProfilesController < ApplicationController
-  
+class UserProfilesController < ApplicationController  
   before_filter :authenticate_user!
   skip_before_filter :check_profile
-
-  
 
   # GET /user_profiles/1
   # GET /user_profiles/1.json
   def show
     @user_profile =  UserProfile.find_by_user_id(current_user.id)
     if @user_profile.nil? 
+      @user_profile = UserProfile.new
       @user_profile.user_id = current_user.id
       @user_profile.save
     end
@@ -20,21 +18,11 @@ class UserProfilesController < ApplicationController
     end
   end
 
-  # GET /user_profiles/new
-  # GET /user_profiles/new.json
-  def new
-    @user_profile = UserProfile.new
-
-    respond_to do |format|
-      format.html # new.html.erb
-      format.json { render json: @user_profile }
-    end
-  end
-
   # GET /user_profiles/1/edit
   def edit
-    @user_profile =  UserProfile.find_by_user_id(current_user.id)
+    @user_profile = UserProfile.find_by_user_id(current_user.id)
     if @user_profile.nil? 
+      @user_profile = UserProfile.new
       @user_profile.user_id = current_user.id
       @user_profile.save
     end
@@ -73,15 +61,4 @@ class UserProfilesController < ApplicationController
     end
   end
 
-  # DELETE /user_profiles/1
-  # DELETE /user_profiles/1.json
-  def destroy
-    @user_profile = UserProfile.find(params[:id])
-    @user_profile.destroy
-
-    respond_to do |format|
-      format.html { redirect_to user_profiles_url }
-      format.json { head :no_content }
-    end
-  end
 end

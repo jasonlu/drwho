@@ -1,8 +1,7 @@
 <%= form_for @user_profile, :class => 'form-horizontal' do |f| %>
   <% if @user_profile.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(@user_profile.errors.count, "error") %> prohibited this user_profile from being saved:</h2>
-
+    <div id="error_explanation" class="alert">
+      <h3>由於下列原因無法儲存資料</h3>
       <ul>
       <% @user_profile.errors.full_messages.each do |msg| %>
         <li><%= msg %></li>
@@ -26,13 +25,15 @@
       <%= f.text_field :firstname %>
     </div>
   </div>
+  <!--
   <div class="field">
     <%= f.label :id_number, t('證件號碼'), :class => '' %>
     <%= f.text_field :id_number %>
   </div>
+-->
   <div class="field">
     <%= f.label :dob, t('生日') %>
-    <%= f.date_select :dob, :start_year => 1950, :end_year => Time.now.year - 5 %>
+    <%= f.date_select :dob, :start_year => Time.now.year - 100, :end_year => Time.now.year - 5, :discard_day => true %>
   </div>
   <div class="field">
     <%= f.label :gender, t('性別') %>
@@ -51,7 +52,7 @@
   </div>
   <div class="field">
     <%= f.label :country, t('國籍') %>
-    <%= f.country_select :country, ["Taiwan"] %>
+    <%= f.country_select :country, ["tw", "cn"], :iso_codes => true  %>
   </div>
   <!--
   <div class="field state">
@@ -60,11 +61,11 @@
   </div>
   -->
   <div class="field">
-    <%= f.label :register_address, t('戶籍地址') %>
+    <%= f.label :register_address, t('戶籍地城市') %>
     <%= f.text_field :register_address %>
   </div>
   <div class="field">
-    <%= f.label :address, t('居住地址') %>
+    <%= f.label :address, t('目前居住地城市') %>
     <%= f.text_field :address %>
   </div>
   <div class="actions">
