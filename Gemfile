@@ -29,7 +29,7 @@ gem 'kaminari-bootstrap', '~> 0.1.3'
 
 
 group :development do
-
+  gem 'rspec'
   gem 'capistrano'
   gem 'magic_encoding'
 

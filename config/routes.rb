@@ -1,7 +1,6 @@
 Drwho::Application.routes.draw do
-
   devise_for :users, :controllers => { :registrations => "user_registrations", :sessions => "user_sessions" }    
-  #resources :news 
+  
   get "inbox", :to => 'inbox#index', :as => :inbox
   get "inbox/:inbox_id", :to => 'inbox#show', :as => :inbox_show
   put "inbox/read/:id", :to => 'inbox#read', :as => :inbox_read
@@ -18,25 +17,16 @@ Drwho::Application.routes.draw do
   get "my_account/self_learning"
   get "my_account/news"
   get "my_account/logout"
+  get "my_account/calendar", :to => 'my_account#calendar'
 
-
-
-  get "calendar", :to => 'my_account#calendar'
-  #resources :carts
-
-
-  resources :pages
-  resources :site_configs
-  #resources :user_profiles
+  get 'pages/:key', :to => 'pages#show', :as => :page
 
   get 'profile', :to => 'user_profiles#show', :as => :user_profiles
   get 'profile', :to => 'user_profiles#show', :as => :user_profile
   get 'profile', :to => 'user_profiles#show', :as => :profile
   patch 'profile', :to => 'user_profiles#update'
   get 'profile/edit', :to => 'user_profiles#edit', :as => :edit_user_profile
-  #put 'profile/update', :to => 'user_profiles#update', :as => :user_profiles
-
-
+  
 
   post 'cart/add(.:format)', :to => 'carts#add'
   delete 'cart/:id', :to => 'carts#delete', :as => :delete_cart
