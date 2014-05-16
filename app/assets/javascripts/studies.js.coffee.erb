@@ -1,0 +1,90 @@
+#$(document).ajaxStop($.unblockUI); 
+$(document).ready ->
+  
+  # console.log("Modernizr.audio.ogg " + Modernizr.audio.ogg );
+  # console.log("Modernizr.audio.m4a " + Modernizr.audio.m4a );
+  # console.log("Modernizr.audio.mp3 " + Modernizr.audio.mp3 );
+  audioHasEnded = (ev) ->
+    
+    # console.log('audio ended index: ' +  index);
+    if index is playlist.length
+      index = 0
+      $(".btn-play-all").removeClass "btn-success"
+      playing = false
+      return true
+    player.src = playlist[index] + "." + ext
+    player.loop = false
+    player.load()
+    player.play()
+    index++
+    return
+  defaultAudioFile = $(".course_item dd").eq(0).data("audio-url")
+  MIMEType = ""
+  ext = ""
+  if Modernizr.audio.m4a is "maybe"
+    ext = "m4a"
+    MIMEType = "audio/mp4"
+  else if Modernizr.audio.ogg is "probably"
+    ext = "ogg"
+    MIMEType = "audio/ogg"
+  else if Modernizr.audio.mp3 is "probably"
+    ext = "mp3"
+    MIMEType = "audio/mpeg"
+  else
+    ext = "wav"
+    MIMEType = "audio/wav"
+  player = new Audio(defaultAudioFile + "." + ext)
+  player.loop = true
+  player.addEventListener "ended", audioHasEnded
+  playing = false
+  playingAll = false
+  lastPlayedObj = null
+  playlist = Array()
+  $("dd[data-audio-url]").each ->
+    playlist.push $(this).data("audio-url")
+    return
+
+  index = 0
+  $(".btn-play").click ->
+    defaultAudioFile = $(this).data("audio-url")
+    playingAll = false
+    
+    #$("#audio_player audio source").attr("src", defaultAudioFile);
+    player.loop = true
+    player.src = defaultAudioFile + "." + ext
+    player.load()
+    $(".btn-success").removeClass "btn-success"
+    unless this is lastPlayedObj
+      player.pause()
+      playing = false
+      lastPlayedObj = null
+    unless playing
+      player.play()
+      $(this).addClass "btn-success"
+      lastPlayedObj = this
+      playing = true
+    else
+      player.pause()
+      
+      #$('.btn-play').removeClass('btn-success');
+      playing = false
+      lastPlayedObj = null
+    return
+
+  $(".btn-play-all").click ->
+    playing = false
+    if playingAll
+      $(".btn-success").removeClass "btn-success"
+      player.pause()
+    else
+      $(".btn-play").removeClass "btn-success"
+      $(this).addClass "btn-success"
+      player.loop = false
+      player.src = playlist[0] + "." + ext
+      player.load()
+      player.play()
+      index++
+      playingAll = true
+    return
+
+  return

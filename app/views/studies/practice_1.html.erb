@@ -12,19 +12,19 @@
 
 
 <%= form_tag(controller: "studies", action: @action_target, day: @day, phase: @phase) do %>
-<ol>
+
   <% i = 0 %>
   <% @course_items.each do |item| %>
   <% i = i + 1 %>
-  <li class="row">
+  <div class="">
     <dl class="course_item course_item_<%= i %> span10">
       <dt><input type="text" class="span10" autocomplete="off" value="" placeholder="Input..." name="course_items[<%= item.id %>]"></dt>
       <dd data-audio-url="<%= item.file_path %>"></dd>
     </dl>
     <a class="btn btn-play pull-right span1" data-audio-url="<%= item.file_path %>"><i class="icon-headphones"></i> 播放</a>
-  </li>
+  </div>
   <% end %>
-</ol>
+
 <%= render "links" %>
 <%= render "submit_button" %>
 <% end %>

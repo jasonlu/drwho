@@ -1,4 +1,6 @@
-<h3><%= @user.fullname %> 課程進度學習表</h3>
+<h3><%= current_user.fullname %> 課程進度學習表</h3>
+<%= render "study_detail_table" %>
+
 <% if @study.starts_at.blank?  %>
 <p class="alert">
   此課程尚未開始

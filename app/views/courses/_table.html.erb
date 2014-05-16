@@ -22,9 +22,6 @@
     
     <td><span class="price pull-right"><%= course.price.to_i %></span></td>
     <td><%= course.duration_days %> 天</td>
-    
-    <td>
-      
       <% disabled = " disabled='disabled' " unless course.can_signup? %>
       <a <%= disabled %> class="add-to-cart btn-small btn" data-id="<%= course.id %>" href="#"><i class="icon-shopping-cart">&nbsp;</i> </a>
     </td>

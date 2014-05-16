@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140420024125) do
+ActiveRecord::Schema.define(version: 20140506052440) do
 
   create_table "ads", force: true do |t|
     t.text     "content"
@@ -215,6 +215,7 @@ ActiveRecord::Schema.define(version: 20140420024125) do
     t.integer  "stage"
     t.integer  "phase"
     t.boolean  "wrong"
+    t.string   "group_id"
   end
 
   create_table "test", force: true do |t|

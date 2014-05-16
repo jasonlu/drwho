@@ -1,11 +1,6 @@
 <h3>易錯排行榜</h3>
-<h4>課程編號 <%= @course.serial %></h4>
-<p>
-    <%= @course.category.title %> <br>
-    <%= @course.title %> <br>
-    <%= @course.unit %> <br>
-    <%= @course.serial %> <br>
-</p>
+<%= render "study_detail_table" %>
+
 <% if @records.length == 0 %>
 <p class="alert alert-info">您沒有任何錯誤，真是太棒了！</p>
 <% else %>

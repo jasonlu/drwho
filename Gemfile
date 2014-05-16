@@ -8,6 +8,7 @@ gem 'protected_attributes'
 
 #group :assets do
   gem 'sass'
+  gem 'backbone-rails', '~> 1.1.0'
   #gem 'anjlab-bootstrap-rails', :require => 'bootstrap-rails',
   #                              :github => 'anjlab/bootstrap-rails',
   #                              :branch => 'v2.2.2.x'

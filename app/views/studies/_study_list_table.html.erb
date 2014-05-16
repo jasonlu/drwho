@@ -38,7 +38,7 @@
         <%= study.passed? ? '通關' : '失敗' unless study.passed.nil? %>
     </td>
     <% end %>
-    <td><%= link_to '易錯排行榜', study_hardests_path(:uuid => study.uuid, :course_id => study.course_id) %></td>
+    <td><%= link_to '易錯排行榜', wrongs_in_course_path(study.uuid) %></td>
   </tr>
 <% end %>
 </table>

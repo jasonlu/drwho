@@ -10,11 +10,10 @@
     <th class="span2">課程編號</th>
   </tr>
   <% @records.each do |record| %>
-  <% study_id = record.study.uuid %>
   <tr class="row">
     <td class=""><%= record.course_item.english %></td>
     <td class="span2"><%= record.cnt %></td>
-    <td class="span2"><%= link_to record.course.serial, study_hardests_path(study_id, record.course_id) %></td>
+    <td class="span2"><%= link_to record.course.serial, wrongs_in_course_path(record.study.uuid) %></td>
   </tr>
   <% end %>
 </table>

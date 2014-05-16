@@ -16,41 +16,31 @@
       <th class="span2">結束上課日期</th>
       <th class="span"></th>
     </tr>
-
     <% @studies.each do |study| %>
-      
     <tr>
-      
       <td><%= study.user_order.order_number %></td>
       <td><%= study.course.category.title %></td>
       <td><%= link_to study.course.title, course_path(study.course_id) %></td>
       <td><%= study.course.unit %></td>
-      <td><%= study.course.duration_days %></td>
+      <td><%= study.course.duration_days %> 天</td>
       <td class="span2">
         <input class="start-day span2" data-duration-days="<%= study.course.duration_days %>" data-id="<%= study.uuid %>" id="study_<%= study.uuid %>_starts_at" min="<%= Date.today %>" name="study[<%= study.uuid %>][starts_at]" type="date" value="<%= study.starts_at %>" />
       <td class="span2">
         <input class="end-day span2" id="study_<%= study.uuid %>_ends_at" name="study[<%= study.uuid %>][ends_at]" readonly="readonly" type="date" value="<%= study.ends_at %>" />
       </td>
       <td><a data-id="<%= study.uuid %>" id="study_<%= study.uuid %>_submit" class="btn btn-primary save" disabled >儲存</a></td>
-      
     </tr>
-      
     <% end %>
   </table>
   <%= paginate @studies %>
-
 </div>
 
-
-
-
-
 <script type="text/javascript">
+var set_start_day_path = "<%= set_start_day_path %>/";
 $(document).ready(function(){
   $("input.start-day").change(function(ev){
     id = $(this).data('id');
     day = $(this).val();
-
     setStartDay(day, id, false);
   });
 
@@ -65,7 +55,7 @@ $(document).ready(function(){
       save = false
     } 
     $.ajax({
-      url: '/study/set_start_day/' + id,
+      url: set_start_day_path + id,
       method: 'patch',
       dataType: 'json',
       data: {starts_at: day, save: save},
@@ -81,7 +71,11 @@ $(document).ready(function(){
           $(".start-on-today").slideDown("slow");
         }
         $('#study_' + id + '_ends_at').val(res.ends_at);
-        $('#study_' + id + '_submit').removeAttr('disabled');
+        if(save) {
+          $('#study_' + id + '_submit').attr('disabled', true);
+        } else {
+          $('#study_' + id + '_submit').removeAttr('disabled');
+        }
       }
     });
   }

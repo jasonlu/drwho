@@ -1,0 +1,20 @@
+<table class="table">
+  <tr>
+    <th class="span2">合約號碼</th>
+    <th class="span2">課程編號</th>
+    <th class="span2">課程分類</th>
+    <th class="span2">課程名稱</th>
+    <th class="span2">單元數</th>
+    <th class="span2">開始日</th>
+    <th class="span2">結束日</th>
+  </tr>
+  <tr>
+    <td class="span2"><%= @study.user_order.try(:order_number) %></td>
+    <td class="span2"><%= @study.course.serial %></td>
+    <td class="span2"><%= @study.course.category.title %></td>
+    <td class="span2"><%= @study.course.title %></td>
+    <td class="span2"><%= @study.course.unit %></td>
+    <td class="span2"><%= @study.starts_at %></td>
+    <td class="span2"><%= @study.ends_at %></td>
+  </tr>
+</table>
