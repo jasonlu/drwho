@@ -53,17 +53,21 @@ Drwho::Application.routes.draw do
   get 'study/records', :to => 'studies#all_records', :as => :study_all_records
   get 'study/records/:uuid', :to => 'studies#record', :as => :study_records
 
-  patch 'study/set_start_day/:uuid', :to => 'studies#set_start_day'
   get "study/set_start_day", :to => 'studies#set_start_day', :as => :set_start_day
+  patch 'study/set_start_day/:uuid', :to => 'studies#set_start_day'
 
   get 'study/read/:uuid/day/:day', :to => 'studies#read', :as => :study_read
-  post 'study/practice/:uuid/day/:day/phase/:phase/result', :to => 'studies#practice_submit'
-  get 'study/practice/:uuid/day/:day/phase/:phase/result', :to => 'studies#practice_result', :as => :study_practice_result
+
+  get 'study/practice/result/:uuid', :to => 'studies#practice_result', :as => :study_practice_result
+  get 'study/exam/result/:uuid', :to => 'studies#exam_result', :as => :study_exam_result
+
   get 'study/practice/:uuid/day/:day/phase/:phase', :to => 'studies#practice', :as => :study_practice
-  
-  post 'study/exam/:uuid/day/:day/phase/:phase/result', :to => 'studies#exam_submit'
-  get 'study/exam/:uuid/day/:day/phase/:phase/result', :to => 'studies#exam_result', :as => :study_exam_result
   get 'study/exam/:uuid/day/:day/phase/:phase', :to => 'studies#exam', :as => :study_exam
+  
+  post 'study/practice/:uuid/day/:day/phase/:phase', :to => 'studies#practice_submit'  
+  post 'study/exam/:uuid/day/:day/phase/:phase', :to => 'studies#exam_submit'
+
+  
   
   get 'study/hardests/:uuid(/course/:course_id)', :to => 'studies#hardests', :as => :study_hardests
   get 'study/:uuid', :to => 'studies#show', :as => :study

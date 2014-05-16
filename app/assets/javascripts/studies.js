@@ -1,6 +1,9 @@
 //$(document).ajaxStop($.unblockUI); 
 $(document).ready(function(){
   var defaultAudioFile = $('.course_item dd').eq(0).data('audio-url');
+  if(defaultAudioFile == null) {
+    return;
+  }
   var MIMEType = "";
   var ext = "";
   // console.log("Modernizr.audio.ogg " + Modernizr.audio.ogg );

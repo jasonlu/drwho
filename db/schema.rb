@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140515054025) do
+ActiveRecord::Schema.define(version: 20140516030814) do
 
   create_table "admins", force: true do |t|
     t.datetime "created_at"
@@ -235,9 +235,22 @@ ActiveRecord::Schema.define(version: 20140515054025) do
     t.integer  "stage"
     t.integer  "phase"
     t.boolean  "wrong"
+    t.string   "try_id"
   end
 
   create_table "test", force: true do |t|
+  end
+
+  create_table "tries", force: true do |t|
+    t.integer  "user_id"
+    t.integer  "study_id"
+    t.integer  "course_id"
+    t.integer  "day"
+    t.integer  "stage"
+    t.integer  "phase"
+    t.float    "score"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "upload_files", force: true do |t|

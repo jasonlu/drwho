@@ -25,7 +25,7 @@
       <td><%= study.course.category.title %></td>
       <td><%= link_to study.course.title, course_path(study.course_id) %></td>
       <td><%= study.course.unit %></td>
-      <td><%= study.course.duration_days %></td>
+      <td><%= study.course.duration_days %> 天</td>
       <td class="span2">
         <input class="start-day span2" data-duration-days="<%= study.course.duration_days %>" data-id="<%= study.uuid %>" id="study_<%= study.uuid %>_starts_at" min="<%= Date.today %>" name="study[<%= study.uuid %>][starts_at]" type="date" value="<%= study.starts_at %>" />
       <td class="span2">
