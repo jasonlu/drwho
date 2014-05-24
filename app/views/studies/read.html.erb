@@ -6,7 +6,7 @@
 </p>
 
 <ul>
-  <li>步驟一：<a class="btn btn-play-all" ><i class="icon-headphones"></i>播放全部單字拼音</a></li>
+  <li>步驟一：<a class="btn btn-play" data-audio-url="<%= CourseItem.file_path + @course.serial + "_day" + @day %>"><i class="icon-headphones"></i>播放全部單字拼音</a></li>
   <li>步驟二：
     <div id="audio_player">Loading the player...</div>
     <div id="study_block">
@@ -14,14 +14,14 @@
       <% @course_items.each do |item| %>
       <% i = i + 1 %>
       <div class="">
-      <dl class="course_item course_item_<%= i %> span10">
-        <dt><%= item.question %></dt>
-        <dd data-audio-url="<%= item.file_path %>">
-          <%= item.answer %>
-        </dd>
-      </dl>
-      <a class="btn btn-play pull-right span1" data-audio-url="<%= item.file_path %>"><i class="icon-headphones"></i> 播放</a>
-      </div>
+	    <dl class="course_item course_item_<%= i %> span10">
+	 	 <dt><%= item.question %></dt>
+	 	 <dd data-audio-url="<%= item.file_path %>">
+	 	   <%= item.answer %>
+	 	 </dd>
+	    </dl>
+	    <a class="btn btn-play pull-right span1" data-audio-url="<%= item.file_path %>"><i class="icon-headphones"></i> 播放</a>
+  	  </div>
       <% end %>
     </div>
   </li>

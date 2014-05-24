@@ -44,7 +44,7 @@
   </section>
 
 
-<footer><%= @config[:copyright].html_safe %></footer>
+<footer><%= @config[:copyright].try(:html_safe) %></footer>
 </div>
 
 </body>

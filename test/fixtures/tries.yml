@@ -1,0 +1,21 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  id: MyString
+  user_id: 1
+  study_id: 1
+  course_id: 1
+  day: 1
+  stage: 1
+  phase: 1
+  score: 1.5
+
+two:
+  id: MyString
+  user_id: 1
+  study_id: 1
+  course_id: 1
+  day: 1
+  stage: 1
+  phase: 1
+  score: 1.5

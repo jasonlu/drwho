@@ -1,39 +1,31 @@
-<style>
-.correct-answer {
-
-}
-.wrong-answer {
-  color: red;
-}
-#audio_player {
-  display: none;
-}
-.score {
-  display: none;
-}
-</style>
-<%= javascript_include_tag "/javascripts/jwplayer.js" %>
-<%= javascript_include_tag "/javascripts/jwplayer.html5.js" %>
+<script src="/javascripts/audio-player.js"></script>
 <div id="audio_player" style="display:none">Loading the player...</div>
+
 <div class="page-header">
-  <h1>第 <%= @day %> 天的進度 <small>測驗結果</small></h1>
+  <h1>第 <%= @day %> 天的進度 <small>
+    <%= @type == 'exam' ? '測驗' : '練習' %><%= (@phase + 1).to_chinese %> 結果</small>
+  </h1>
 </div>
-<div class="score"><%= @score %></div>
+<h3>正確率：<span class="score"><%= @score %> % </span> </h3>
 <p class="alert alert-info">
   下列紅字部分為錯誤的答案
 </p>
-
-
-
+<%= render "show_answer_button" %>
 <ol>
   <% i = 0 %>
-  <% @course_items.each do |item| %>
+  <% @study_records.each do |record| %>
   <% i = i + 1 %>
   <li>
     <dl class="course_item course_item_<%= i %>">
-      <dt class="<%= @results[item.id][:wrong?] ? 'wrong-answer' : 'correct-answer' %>"><%= @results[item.id][:content] %></dt>
-      <dt class="answer" style="display:none"><%= item.question %></dt>
-      <dd data-audio-url="<%= item.file_path %>"><%= item.answer %></dd>
+      <dt class="<%= record.wrong? ? 'wrong-answer' : 'correct-answer' %>">
+        <%= record.content %>
+      </dt>
+      <dt class="answer" style="display:none">
+        <%= record.course_item.question %>
+      </dt>
+      <dd data-audio-url="<%= record.course_item.file_path %>">
+        <%= record.course_item.answer %>
+      </dd>
     </dl>
   </li>
   <% end %>

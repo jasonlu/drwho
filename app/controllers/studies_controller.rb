@@ -81,16 +81,28 @@ class StudiesController < ApplicationController
     @type = 'exam'
     @phase = params[:phase].to_i
     uuid = compare_result(3)
+<<<<<<< HEAD
 
     redirect_to study_practice_result_path(:uuid => uuid)
     
+=======
+    if uuid
+      redirect_to study_exam_result_path(:uuid => uuid)
+    else
+      flash[:error] = t("errors.messages.duplicate_exam_submit")
+      redirect_to study_path(:uuid => params[:uuid])
+    end
+>>>>>>> FETCH_HEAD
   end
 
   def practice_submit
     @type = 'practice'
     @phase = params[:phase].to_i
-    if compare_result(2)
-      redirect_to study_practice_result_path(:uuid => params[:uuid], :day => params[:day], :phase => params[:phase])
+    uuid = compare_result(2)
+    if uuid
+      redirect_to study_practice_result_path(:uuid => uuid)
+    else
+      redirect_to study_path(:uuid => params[:uuid])
     end
   end
 
@@ -105,6 +117,8 @@ class StudiesController < ApplicationController
   end
 
   def read
+    @study = current_user.studies.where("uuid = ?", params[:uuid]).first
+    @course = @study.course
     @day = params[:day]
     @course_items = @study.course.course_items.where('day = ?', @day)
 
@@ -156,94 +170,107 @@ class StudiesController < ApplicationController
     end
   end
 
+
 :private
 
   def compare_result(stage)
     @study = current_user.studies.where("uuid = ?", params[:uuid]).first
     @day = params[:day]
     @phase = params[:phase].to_i
-    @progress = Progress.where(
-      :user_id => current_user.id,
-      :study_id => @study.id,
-      :course_id => @study.course_id,
-      :stage => stage,
-      :phase => @phase,
-      :day => @day,
-    ).first
+    save_progress = true
 
-    unless @progress.nil?
-      redirect_to study_practice_result_path
-      return false
+    p = @study.progresses.where(:day => @day, :stage => stage, :phase => @phase).first
+    unless p.nil?
+      save_progress = false
+      puts "WILL NOT SAVE"
+      if stage == 3
+        return false
+      end
     end
+    
+    user_id = current_user.id
+    study_id = @study.id
+    course_id = @study.course_id
 
     course_ids = Array.new
     @results = Hash.new
     
     total_questions = params[:course_items].length.to_i
     total_wrongs = 0.0
-    uuid = SecureRandom.uuid
-    params[:course_items].each do |key, value|
-      course_ids.push(key.to_i)
-      ci = CourseItem.find(key.to_i)
-      #wrong = ci.question.downcase.gsub(/[^0-9a-z]/i, '') != value.downcase.gsub(/[^0-9a-z]/i, '')  ? true : false
-      wrong = ci.question != value ? true : false
-      value = '__' if value == ''
+    @try = Try.new
     
-      StudyRecord.create(
-        :user_id => current_user.id,
-        :course_item_id => key.to_i,
-        :content => value,
-        :study_id => @study.id,
-        :course_id => @study.course_id,
-        :wrong => wrong,
-        :stage => stage,
-        :phase => @phase,
-        :group_id => uuid
-      )
-      if wrong
-        total_wrongs += 1
-      end
-      @score = (1 - total_wrongs / total_questions) * 100
-      @score = @score.round(0)
-    end
-    #@course_items = CourseItem.where(:id => course_ids)#.order("FIELD(id, (?))", course_ids)
+    Progress.transaction do
+      params[:course_items].each do |key, value|
+        course_ids.push(key.to_i)
+        ci = CourseItem.find(key.to_i)
+        #wrong = ci.question.downcase.gsub(/[^0-9a-z]/i, '') != value.downcase.gsub(/[^0-9a-z]/i, '')  ? true : false
+        wrong = ci.question != value ? true : false
+        value = '__' if value == ''
+        
+        StudyRecord.create(
+          :user_id => user_id,
+          :course_item_id => key.to_i,
+          :content => value,
+          :study_id => study_id,
+          :course_id => course_id,
+          :wrong => wrong,
+          :stage => stage,
+          :phase => @phase,
+          :try_id => @try.id
+        )
+        if wrong
+          total_wrongs += 1
+        end
+      end # end of loop
 
-    Progress.create(
-      :user_id => current_user.id,
-      :course_item_id => 0,
-      :study_id => @study.id,
-      :course_id => @study.course_id,
-      :stage => stage,
-      :phase => @phase,
-      :day => @day,
-      :score => @score
-    )
-    return uuid
-  end
+      @score = (1 - total_wrongs / total_questions) * 100
+
+      @try.score = @score.round(2)
+      @try.user_id = user_id
+      @try.study_id = study_id
+      @try.course_id = course_id
+      @try.day = @day
+      @try.phase = @phase
+      @try.stage = stage
+      @try.save
+
+      @score = @score.round(0)
+      if save_progress
+        Progress.create(
+          :user_id => current_user.id,
+          :course_item_id => 0,
+          :study_id => @study.id,
+          :course_id => @study.course_id,
+          :stage => stage,
+          :phase => @phase,
+          :day => @day,
+          :score => @score
+        )
+      end
+    end # end of transaction
+    return @try.id
+  end # end of method
 
   def get_result(stage)
-    @records = current_user.study_records.where(:group_id => params[:uuid])
-    @study = @records.first.study
-    @day = params[:day]
-    @phase = params[:phase].to_i
-    @progress = Progress.where(
-      :user_id => current_user.id,
-      :study_id => @study.id,
+    @try = Try.where(:id => params[:uuid]).first
+    if @try.nil?
+      redirect_to studies_path
+      return
+    end
+
+    @study = current_user.studies.where(:id => @try.study_id).first
+    @day = @try.day
+    @phase = @try.phase
+    @stage = @try.stage
+    @progress = @study.progresses.where(
       :course_id => @study.course_id,
-      :stage => stage,
+      :stage => @stage,
       :phase => @phase,
       :day => @day,
     ).order("id ASC").last
-    if @progress.nil?
-      redirect_to study_path params[:uuid]
-      return
-    end
-    @study_records = @study.study_records.
-      joins(:course_item).
-      where("stage = ? AND phase = ? AND course_items.day = ?", stage, @phase, @day ).
-      group(:course_item_id).
-      order("id ASC")
-    @score = @progress.score
+    
+    @study_records = @try.records.order("id ASC").all
+    @score = @try.score.round(0)
   end
 
   def select_studies
