@@ -81,18 +81,14 @@ class StudiesController < ApplicationController
     @type = 'exam'
     @phase = params[:phase].to_i
     uuid = compare_result(3)
-<<<<<<< HEAD
 
-    redirect_to study_practice_result_path(:uuid => uuid)
-    
-=======
     if uuid
       redirect_to study_exam_result_path(:uuid => uuid)
     else
       flash[:error] = t("errors.messages.duplicate_exam_submit")
       redirect_to study_path(:uuid => params[:uuid])
     end
->>>>>>> FETCH_HEAD
+
   end
 
   def practice_submit
