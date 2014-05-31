@@ -22,6 +22,8 @@ gem 'protected_attributes'
 
 gem "devise", "3.0.0.rc"
 gem 'devise-i18n'
+gem "devise-async"
+gem 'sidekiq'
 
 gem 'country_select', '1.2.0'
 
@@ -41,7 +43,7 @@ group :production do
   
 end
 
-#gem 'cancan'
+gem 'cancan'
 
 
 # To use ActiveModel has_secure_password

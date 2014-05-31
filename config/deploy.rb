@@ -5,7 +5,7 @@ set :application, "Drwho"
 set :repository,  "git@github.com:jasonlu/drwho.git"
 set :keep_release, 5
 set :use_sudo, false
-set :models_path, "/srv/www/admin.onlynet.biz.staging/current/app/models"
+
 set :scm, :git # You can set :scm explicitly or Capistrano will make an intelligent guess based on known version control directory names
 set :scm_passphrases, ""
 # Or: `accurev`, `bzr`, `cvs`, `darcs`, `git`, `mercurial`, `perforce`, `subversion` or `none`
@@ -87,6 +87,13 @@ namespace :deploy do
     #run "#{try_sudo} touch #{File.join(current_path,'tmp','restart.txt')}"
   end
 
+  desc "My Fnilaize Update"
+  task :finalize_update do
+    run "chmod -R -- g+w #{release_path} && rm -rf -- #{release_path}/log && rm -rf -- #{release_path}/tmp/pids && mkdir -p -- #{release_path}/tmp && rm -rf #{release_path}/public"
+    run "rm #{release_path}/config/environments/development.rb"
+    run "mv #{release_path}/config/environments/development_staging #{release_path}/config/environments/development.rb"
+  end
+
   desc "My setup here"
   task :setup do
     run "mkdir -p #{deploy_to} #{deploy_to}/releases #{deploy_to}/shared #{deploy_to}/shared/system #{deploy_to}/shared/log #{deploy_to}/shared/pids #{deploy_to}/shared/files #{deploy_to}/shared/temp #{deploy_to}/shared/uploads #{deploy_to}/shared/ckeditor_assets #{deploy_to}/shared/config"
@@ -120,12 +127,12 @@ namespace :deploy do
     run "ln -nfs #{shared_path}/config/database.yml #{release_path}/config/database.yml"
     run "ln -nfs #{shared_path}/config/initializers/secret_token.rb #{release_path}/config/initializers/secret_token.rb"
 
-    run "ln -nfs #{static_shared_path}/uploads #{release_path}/public/uploads"
-    run "ln -nfs #{static_shared_path}/files #{release_path}/public/files"
-    run "ln -nfs #{static_shared_path}/docs #{release_path}/public/docs"
+    # run "ln -nfs #{static_shared_path}/uploads #{release_path}/public/uploads"
+    # run "ln -nfs #{static_shared_path}/files #{release_path}/public/files"
+    # run "ln -nfs #{static_shared_path}/docs #{release_path}/public/docs"
     run "ln -nfs #{models_path} #{release_path}/app/models"
+    run "ln -nfs #{public_path} #{release_path}/public"
     run "ln -nfs #{shared_path}/assets #{release_path}/assets"
-    run "ln -nfs #{shared_path}/temp #{release_path}/public/temp"
     run "ln -nfs #{shared_path}/log #{release_path}/log"
     run "ln -nfs #{shared_path}/pid #{release_path}/tmp/pid"
     run "ln -nfs #{shared_path}/tmp #{release_path}/tmp"
