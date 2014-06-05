@@ -1,6 +1,15 @@
 # config valid only for Capistrano 3.1
 lock '3.2.1'
 
+# deploy:starting    - start a deployment, make sure everything is ready
+# deploy:started     - started hook (for custom tasks)
+# deploy:updating    - update server(s) with a new release
+# deploy:updated     - updated hook
+# deploy:publishing  - publish the new release
+# deploy:published   - published hook
+# deploy:finishing   - finish the deployment, clean up everything
+# deploy:finished    - finished hook
+
 set :application, 'drwho'
 set :repo_url, "git@github.com:jasonlu/drwho.git"
 
@@ -33,6 +42,11 @@ set :repo_url, "git@github.com:jasonlu/drwho.git"
 
 # Default value for keep_releases is 5
 # set :keep_releases, 5
+set :git_strategy, SubmoduleStrategy
+
+def remote_file_exists?(full_path)
+  'true' ==  capture("if [ -e #{full_path} ]; then echo 'true'; fi").strip
+end
 
 namespace :deploy do
 
@@ -40,7 +54,15 @@ namespace :deploy do
   task :create_symlink do
     on roles(:app) do |host|
       execute :ln, "-s #{fetch :static_shares}/config/database.yml #{fetch :release_path}/config/database.yml"
-      execute :ln, "-s #{fetch :static_shares}/config/initializers/secret_token.rb #{fetch :release_path}/config/initializers/secret_token.rb"
+      execute :ln, "-s #{fetch :static_shares}/config/initializers/secret_token.admin.rb #{fetch :release_path}/config/initializers/secret_token.rb"
+      set :shared_path, "#{fetch :release_path}/../../shared"
+      within "#{fetch :shared_path}" do
+        execute :mkdir, "-p ./log"
+        execute :mkdir, "-p ./tmp"
+        execute :mkdir, "-p ./pid"
+        execute :mkdir, "-p ./assets"
+      end
+
       within "#{fetch :release_path}" do
         execute :rm, "-Rf #{fetch :release_path}/public"
         execute :ln, "-s #{fetch :static_shares}/public #{fetch :release_path}/public"
@@ -48,8 +70,8 @@ namespace :deploy do
         execute :rm, "-Rf #{fetch :release_path}/log"
         execute :ln, "-s #{fetch :shared_path}/log #{fetch :release_path}/log"
 
-        execute :rm, "-Rf #{fetch :release_path}/app/models"
-        execute :ln, "-s #{fetch :models_path} #{fetch :release_path}/app/models"
+        execute :rm, "-Rf #{fetch :release_path}/tmp"
+        execute :ln, "-s #{fetch :shared_path}/tmp #{fetch :release_path}/tmp"
         
       end      
     end
@@ -58,40 +80,50 @@ namespace :deploy do
   desc "bundle_install"
   task :bundle_install do
     on roles(:app) do |host|
-      within "#{fetch :deploy_to}/current" do
+      if release_path != ""
+        path = release_path
+      else
+        path = "#{fetch :deploy_to}/current"
+      end
+      within path do
         execute :bundle, "install"
       end
     end
   end
 
-  desc 'Restart application'
-  task :restart do
-    on roles(:app), in: :sequence, wait: 5 do
-      # Your restart mechanism here, for example:
-      # execute :touch, release_path.join('tmp/restart.txt')
-    end
-  end
 
   desc 'Compile Assets'
   task :compile_assets do
     on roles(:app) do |host|
-      within "#{fetch :release_path}" do
+      if release_path != ""
+        path = release_path
+      else
+        path = "#{fetch :deploy_to}/current"
+      end
+
+      within path do
         execute :bundle, "exec rake assets:precompile"
       end
     end
   end
 
-  after :published, :create_symlink do
-    Rake::Task["deploy:bundle_install"].invoke
-    Rake::Task["deploy:compile_assets"].invoke
-    Rake::Task["deploy:restart"].invoke
-    
-    #deploy.bundle_install
-    #deploy.restart
-  end
+  desc 'Restart Thin'
+  task :restart do
+    on roles(:app), in: :sequence, wait: 5 do
+      if release_path != ""
+        path = release_path
+      else
+        path = "#{fetch :deploy_to}/current"
+      end
+      set :thin_pid_file, "#{path}/#{fetch :thin_pid_file}"
 
-  after :restart, :clear_cache do
-    on roles(:app), in: :groups, limit: 3, wait: 10 do
+      within path do
+        if remote_file_exists?(fetch :thin_pid_file)
+          execute :bundle, "exec thin restart -O -C #{fetch :thin_config_file}"
+        else
+          execute :bundle, "exec thin start -O -C #{fetch :thin_config_file}"
+        end
+      end
       # Here we can do anything such as:
       # within release_path do
       #   execute :rake, 'cache:clear'
@@ -99,4 +131,18 @@ namespace :deploy do
     end
   end
 
+  after :published, :create_symlink do
+    #Rake::Task["deploy:create_symlink"].invoke
+    Rake::Task["deploy:bundle_install"].invoke
+    Rake::Task["deploy:compile_assets"].invoke
+    Rake::Task["deploy:restart"].invoke
+    #deploy.bundle_install
+    #deploy.restart
+  end
+
+  after :restart, :clear_cache do
+    
+  end
+
 end
+

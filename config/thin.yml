@@ -1,5 +1,5 @@
 ---
-chdir: /srv/www/onlynet.biz/current
+#chdir: /srv/www/onlynet.biz/current
 environment: production
 #environment: development
 address: 0.0.0.0
