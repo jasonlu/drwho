@@ -74,11 +74,11 @@ namespace :deploy do
         execute :mkdir, "-p ./public"
         execute :mkdir, "-p ./private"
       end
+      user = host.user
       run_locally do
-        execute :rsync, "-vr --exclude='.DS_Store' config/database.yml deploy@#{host}:#{fetch :static_shares}/config/"
-        execute :rsync, "-vr --exclude='.DS_Store' config/initializers/secret_token.rb deploy@#{host}:#{fetch :static_shares}/config/initializers/"
+        execute :rsync, "-vr --exclude='.DS_Store' config/database.yml #{user}@#{host}:#{fetch :static_shares}/config/"
+        execute :rsync, "-vr --exclude='.DS_Store' config/initializers/secret_token.rb #{user}@#{host}:#{fetch :static_shares}/config/initializers/secret_token.rb"
       end
-
     end
   end
 
