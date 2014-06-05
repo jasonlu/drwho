@@ -50,11 +50,44 @@ end
 
 namespace :deploy do
 
+  desc 'Setup'
+  task :setup do
+    on roles(:app) do |host|
+      
+      within "#{fetch :deploy_to}" do
+        execute :mkdir, "-p ./shared"
+        execute :mkdir, "-p ./releases"
+        execute :mkdir, "-p ./repo"
+      end
+      shared_path = "#{fetch :deploy_to}/shared"
+      
+      within shared_path do
+        execute :mkdir, "-p ./log"
+        execute :mkdir, "-p ./tmp"
+        execute :mkdir, "-p ./pid"
+        execute :mkdir, "-p ./assets"
+      end
+
+      within "#{fetch :static_shares}" do
+        execute :mkdir, "-p ./log"
+        execute :mkdir, "-p ./config"
+        execute :mkdir, "-p ./public"
+        execute :mkdir, "-p ./private"
+      end
+      run_locally do
+        execute :rsync, "-vr --exclude='.DS_Store' config/database.yml deploy@#{host}:#{fetch :static_shares}/config/"
+        execute :rsync, "-vr --exclude='.DS_Store' config/initializers/secret_token.rb deploy@#{host}:#{fetch :static_shares}/config/initializers/"
+      end
+
+    end
+  end
+
+
   desc 'Create symlink'
   task :create_symlink do
     on roles(:app) do |host|
       execute :ln, "-s #{fetch :static_shares}/config/database.yml #{fetch :release_path}/config/database.yml"
-      execute :ln, "-s #{fetch :static_shares}/config/initializers/secret_token.admin.rb #{fetch :release_path}/config/initializers/secret_token.rb"
+      execute :ln, "-s #{fetch :static_shares}/config/initializers/secret_token.rb #{fetch :release_path}/config/initializers/secret_token.rb"
       set :shared_path, "#{fetch :release_path}/../../shared"
       within "#{fetch :shared_path}" do
         execute :mkdir, "-p ./log"

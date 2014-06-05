@@ -8,11 +8,10 @@ role :app, %w{deploy@192.168.0.20}
 set :deploy_to, "/srv/www/100_onlynet_dev"
 set :static_shares, "/srv/www/102_onlynet_dev_static"
 set :thin_config_file, "./config/thin.staging.yml"
-set :thin_pid_file, "#{shared_path}/pids/thin.staging.pid"
+set :thin_pid_file, "tmp/pids/thin.staging.pid"
 set :models_path, "/srv/www/101_onlynet_dev_models/current/models"
 #set :env, "production"
 set :env, "production"
-
 
 #role :web, %w{deploy@example.com}
 #role :db,  %w{deploy@example.com}

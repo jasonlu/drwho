@@ -3,7 +3,7 @@
 environment: production
 #environment: development
 address: 0.0.0.0
-port: 6000
+port: 6011
 timeout: 30
 log: log/thin.staging.log
 pid: tmp/pids/thin.staging.pid
