@@ -41,6 +41,7 @@ module SubmoduleStrategy
     release_branch = fetch(:release_branch, File.basename(release_path))
     git :checkout, '-B', release_branch, 
       fetch(:remote_branch, "origin/#{fetch(:branch)}")
+    git :submodule, :foreach, 'git pull origin master'
     git :submodule, :update, '--init'
     context.execute "rsync -ar --exclude-from '#{repo_path}/.capignore' #{repo_path}/ #{release_path}"
   end
