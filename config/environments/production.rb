@@ -10,7 +10,7 @@ Drwho::Application.configure do
   config.action_controller.perform_caching = true
 
   # Disable Rails's static asset server (Apache or nginx will already do this)
-  config.serve_static_assets = true
+  config.serve_static_assets = false
 
   # Compress JavaScripts and CSS
   config.assets.compress = false
@@ -52,6 +52,8 @@ Drwho::Application.configure do
   # Disable delivery errors, bad email addresses will be ignored
   # config.action_mailer.raise_delivery_errors = false
   config.action_mailer.raise_delivery_errors = true
+  config.action_mailer.default_url_options = { :host => 'www.onlynet.biz' }
+  config.action_mailer.delivery_method = :sendmail
 
   # Enable threaded mode
   # config.threadsafe!
