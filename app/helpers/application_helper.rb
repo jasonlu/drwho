@@ -1,4 +1,25 @@
 module ApplicationHelper
+  def fix_404
+    controllers = Dir.glob("#{Rails.root}/app/controllers/*.rb")
+    controllers.each do |ctrl|
+      start = ctrl.rindex(/\//) + 1
+      length = ctrl.rindex(/_/) - 1
+      name = ctrl[start..length]
+      if Dir.glob("#{Rails.root}/app/assets/javascripts/#{name}.*").empty?
+        puts "MISSING: #{name}.js \n"
+        File.open("#{Rails.root}/app/assets/javascripts/#{name}.js", 'w') do |f|
+          f.write("// empty js file")
+        end
+      end
+
+      if Dir.glob("#{Rails.root}/app/assets/stylesheets/#{name}.*").empty?
+        puts "MISSING: #{name}.css \n"
+        File.open("#{Rails.root}/app/assets/stylesheets/#{name}.css", 'w') do |f|
+          f.write("/* empty css file */")
+        end
+      end
+    end
+  end
 end
 
 class Integer
