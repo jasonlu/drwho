@@ -11,7 +11,7 @@
   <div class="clear" style="clear:both;"></div>
 </div>
 <p>
-  <%= simple_format(news.content) %>
+  <%= news.content.html_safe %>
 </p>
 <p class="text-right text-info"><%= news.user.fullname unless news.user.nil? %></p>
 
