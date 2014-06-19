@@ -1,5 +1,6 @@
 //$(document).ajaxStop($.unblockUI); 
 $(document).ready(function(){
+  /*
   $('a.add-to-cart').click(function(){
     //$.blockUI({ message: null });
     var thisId = $(this).data('id');
@@ -9,4 +10,5 @@ $(document).ready(function(){
       return true;
     }, 'json');
   });
+  */
 });

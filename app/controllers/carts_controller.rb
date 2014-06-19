@@ -91,10 +91,12 @@ class CartsController < ApplicationController
       @cart.save
     end
 
-    respond_to do |format|
-        format.html { render action: "new" }
-        format.json { render json: carts, status: :created }
-    end
+    render json: carts, status: :created 
+
+    # respond_to do |format|
+    #     format.html { render action: "new" }
+    #     format.json { render json: carts, status: :created }
+    # end
   end
 
 end

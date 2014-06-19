@@ -40,7 +40,7 @@
           <h2 class="site-url"><%= "#{request.host_with_port}" %></h2>
           <ul class="manifest">
             <li>購物單編號：<%= @order_number  %> </li>
-            <li>購物單日期：<%= Date.today %></li>
+            <li>購物單日期：<%= @user_order.created_at.localtime.strftime("%Y / %m / %-d") %></li>
           </ul>
         </div>
       </div>

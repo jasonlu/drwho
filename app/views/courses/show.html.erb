@@ -1,4 +1,10 @@
-<h2><%= @course.title %></h2>
+<h2 class="pull-left"><%= @course.title %></h2>
+
+
+<%= link_to add_to_cart_path(@course.id), :class => "pull-right add-to-cart btn-small btn", :remote => true, :method => :post do %>
+  <i class="icon-shopping-cart">&nbsp;</i>加入購物車
+<% end %>
+<hr class="clearfix" style="clear: both;">
 <p>
   <b>售價:</b>
   <%= @course.price.to_i %>
@@ -11,4 +17,9 @@
   <%= @course.description.html_safe %>
 </p>
 
+<%= link_to courses_path do %>返回課程清單
+<% end %>
 
+<%= link_to add_to_cart_path(@course.id), :class => "pull-right add-to-cart btn-small btn", :remote => true, :method => :post do %>
+  <i class="icon-shopping-cart">&nbsp;</i>加入購物車
+<% end %>

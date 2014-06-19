@@ -28,7 +28,7 @@ Drwho::Application.routes.draw do
   get 'profile/edit', :to => 'user_profiles#edit', :as => :edit_user_profile
   
 
-  post 'cart/add(.:format)', :to => 'carts#add'
+  post 'cart/add/:id(.:format)', :to => 'carts#add', :as => :add_to_cart
   delete 'cart/:id', :to => 'carts#delete', :as => :delete_cart
   get 'cart', :to => 'carts#show', :as => :cart
 
