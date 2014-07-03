@@ -152,7 +152,8 @@ namespace :deploy do
 
       within path do
         if remote_file_exists?(fetch :thin_pid_file)
-          execute :bundle, "exec thin restart -O -C #{fetch :thin_config_file}"
+          execute :bundle, "exec thin stop -O -C #{fetch :thin_config_file}"
+          execute :bundle, "exec thin start -O -C #{fetch :thin_config_file}"
         else
           execute :bundle, "exec thin start -O -C #{fetch :thin_config_file}"
         end

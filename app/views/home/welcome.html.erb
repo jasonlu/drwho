@@ -13,7 +13,7 @@
 <p>
   <%= news.content.html_safe %>
 </p>
-<p class="text-right text-info"><%= news.user.fullname unless news.user.nil? %></p>
+<p class="text-right text-info"><%= news.admin.try(:fullname) %></p>
 
 <% end %>
 <h2 id="courses">熱門課程</h2>

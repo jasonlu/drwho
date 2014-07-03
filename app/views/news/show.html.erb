@@ -4,4 +4,4 @@
 <p>
   <%= @news.content.html_safe %>
 </p>
-<p class="text-right text-info"><%= @news.user.user_profile.firstname + ' ' + @news.user.user_profile.lastname %></p>
+<p class="text-right text-info"><%= news.admin.try(:fullname) %></p>
