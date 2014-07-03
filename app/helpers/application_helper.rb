@@ -1,4 +1,10 @@
 module ApplicationHelper
+
+  def title(page_title)
+    content_for(:title) { page_title }
+  end
+
+
   def fix_404
     controllers = Dir.glob("#{Rails.root}/app/controllers/*.rb")
     controllers.each do |ctrl|

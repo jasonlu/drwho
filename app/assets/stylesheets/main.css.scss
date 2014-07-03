@@ -1,5 +1,13 @@
 @import 'variables.css.scss';
+@font-face {
+  font-family: "Droid";
+  src: url("/fonts/DroidSansFallback.ttf") format("truetype");
+  font-weight:bold;
+}
 
+body {
+  font-family: "Droid", "Helvetica Neue",Helvetica,Arial,sans-serif;
+}
 ul.nav {
   li.dropdown {
     ul.dropdown-menu {
