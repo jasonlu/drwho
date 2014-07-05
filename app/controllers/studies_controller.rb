@@ -289,6 +289,8 @@ class StudiesController < ApplicationController
     end
     
     now = Time.now
+    # starts_at: utc date only.
+    # now: local time date and time.
     @studies = current_user.studies.where('starts_at <= ?', now).joins(:course).joins(:category).order(sort + ' ' + dir).page(params[:page])
     # DateTime.now.beginning_of_day
     # DateTime.now.end_of_day

@@ -68,6 +68,7 @@ module Drwho
     config.action_mailer.perform_deliveries = true
     config.action_mailer.default_url_options = { :host => 'www.onlynet.biz' }
     config.action_mailer.delivery_method = :sendmail
+    config.cache_store = :dalli_store, 'localhost', { :namespace => "DrwonAdmin", :expires_in => 1.day, :compress => true }
     
   end
 end

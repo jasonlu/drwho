@@ -4,6 +4,7 @@ gem 'rails-i18n', '~> 4.0.0'
 gem 'mysql2', '~> 0.3.0'
 gem 'thin'
 gem 'protected_attributes'
+gem "dalli"
 
 #group :assets do
   gem 'sass'
