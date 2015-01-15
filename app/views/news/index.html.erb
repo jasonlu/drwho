@@ -10,8 +10,7 @@
 <p>
   <%= news.content.html_safe %>
 </p>
-<p class="text-right text-info"><%= news.admin.try(:fullname) %></p>
-
+<p class="text-right text-info">發佈於 <%= news.created_at.localtime() %> <%= news.user.try(:fullname) %></p>
 <% end %>
 
 <%= paginate @news %>
