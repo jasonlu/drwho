@@ -14,23 +14,13 @@
       <%= f.label :lastname, t('姓') %>
       <%= f.text_field :lastname %>
     </div>
-    <!--
-    <div class="field span3">
-      <%= f.label :middlename, t('中間名')%>
-      <%= f.text_field :middlename %>
-    </div>
-    -->
+
     <div class="field span3">
       <%= f.label :firstname, t('名') %>
       <%= f.text_field :firstname %>
     </div>
   </div>
-  <!--
-  <div class="field">
-    <%= f.label :id_number, t('證件號碼'), :class => '' %>
-    <%= f.text_field :id_number %>
-  </div>
--->
+
   <div class="field">
     <%= f.label :dob, t('生日') %>
     <%= f.date_select :dob, :start_year => Time.now.year - 100, :end_year => Time.now.year - 5, :discard_day => true %>
@@ -52,14 +42,9 @@
   </div>
   <div class="field">
     <%= f.label :country, t('國籍') %>
-    <%= f.country_select :country, ["tw", "cn"], :iso_codes => true  %>
+    <%= f.country_select :country, :priority_countries => ["tw", "cn"], :iso_codes => true  %>
   </div>
-  <!--
-  <div class="field state">
-    <%= f.label :state, t('省份') %>
-    <%= f.select :state,['北京市','天津市','河北省','山西省','內蒙古自治區','遼寧省','吉林省','黑龍江省','上海市','江蘇省','浙江省','安徽省','福建省','江西省','山東省','河南省','湖北省','湖南省','廣東省','廣西壯族自治區','海南省','重慶市','四川省','貴州省','雲南省','西藏自治區','陝西省','甘肅省','青海省','寧夏回族自治區','新疆維吾爾自治區','香港特別行政區','澳門特別行政區'] %>
-  </div>
-  -->
+
   <div class="field">
     <%= f.label :register_address, t('戶籍地城市') %>
     <%= f.text_field :register_address %>

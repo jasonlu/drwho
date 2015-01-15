@@ -1,0 +1,25 @@
+defaults: &defaults
+  app_secret_key: ""
+  app_name: ""
+  domain: "http://www.onlynet.me"
+  facebook_app_id: 0
+  google_analytics_key: ""
+  default_og_url:
+  mailgun:
+    api_key: ""
+    api_host: ""
+    email_sender: ""
+  disqus_shortname: "onlynet"
+
+development:
+  <<: *defaults
+  env_secret: ""
+
+test:
+  <<: *defaults
+
+
+production:
+  <<: *defaults
+  env_secret: ""
+  domain: "http://www.onlynet.biz"

@@ -10,6 +10,10 @@
 # Ignore the default SQLite database.
 /db/*.sqlite3
 
+# Ignore password / secret files
+/config/secrets.yml
+/config/database.yml
+
 # Ignore all logfiles and tempfiles.
 /log/*.log
 /tmp
@@ -25,4 +29,5 @@
 /public/docs/*
 /config/initializers/secret_token.rb
 /config/database.yml
+/config/config.yml
 /doc/mfg.html
