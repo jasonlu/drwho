@@ -21,7 +21,7 @@
     <td><%= course.duration_days %> 天</td>
     <td>
       <% #disabled = " disabled='disabled' " unless course.can_signup? %>
-      <%= link_to add_to_cart_path(course.id), :class => "add-to-cart btn-small btn", :remote => true, :method => :post do %>
+      <%= link_to add_to_cart_path(course.id, :format => :json, :authenticity_token => form_authenticity_token), :class => "add-to-cart btn-small btn", :remote => true, :method => :post do %>
         <i class="icon-shopping-cart">&nbsp;</i>
       <% end %>
 
