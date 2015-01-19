@@ -5,7 +5,7 @@ gem 'rails', '4.1.1'
 gem 'rails-i18n', github: 'svenfuchs/rails-i18n', branch: 'master' # For 4.x
 
 gem 'mysql2'
-gem 'sqlite3'
+
 gem 'thin'
 gem "settingslogic"
 gem 'protected_attributes'
@@ -54,11 +54,6 @@ group :development do
   gem "better_errors"
   gem "annotate"
 end
-
-group :production do
-  gem 'mysql2'
-end
-
 
 
 

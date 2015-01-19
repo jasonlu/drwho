@@ -77,7 +77,9 @@ namespace :deploy do
       user = host.user
       run_locally do
         execute :rsync, "-vr --exclude='.DS_Store' config/database.yml #{user}@#{host}:#{fetch :static_shares}/config/"
-        execute :rsync, "-vr --exclude='.DS_Store' config/initializers/secret_token.rb #{user}@#{host}:#{fetch :static_shares}/config/initializers/secret_token.rb"
+        execute :rsync, "-vr --exclude='.DS_Store' config/config.yml #{user}@#{host}:#{fetch :static_shares}/config/"
+        execute :rsync, "-vr --exclude='.DS_Store' config/secrets.yml #{user}@#{host}:#{fetch :static_shares}/config/"
+        #execute :rsync, "-vr --exclude='.DS_Store' config/initializers/secret_token.rb #{user}@#{host}:#{fetch :static_shares}/config/initializers/secret_token.rb"
       end
     end
   end
@@ -87,7 +89,9 @@ namespace :deploy do
   task :create_symlink do
     on roles(:app) do |host|
       execute :ln, "-s #{fetch :static_shares}/config/database.yml #{fetch :release_path}/config/database.yml"
-      execute :ln, "-s #{fetch :static_shares}/config/initializers/secret_token.rb #{fetch :release_path}/config/initializers/secret_token.rb"
+      execute :ln, "-s #{fetch :static_shares}/config/config.yml #{fetch :release_path}/config/config.yml"
+      execute :ln, "-s #{fetch :static_shares}/config/secrets.yml #{fetch :release_path}/config/secrets.yml"
+      #execute :ln, "-s #{fetch :static_shares}/config/initializers/secret_token.rb #{fetch :release_path}/config/initializers/secret_token.rb"
       set :shared_path, "#{fetch :release_path}/../../shared"
       within "#{fetch :shared_path}" do
         execute :mkdir, "-p ./log"
