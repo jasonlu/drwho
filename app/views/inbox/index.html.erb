@@ -12,7 +12,7 @@
   <tr data-inbox-id="<%= inbox.id %>" class="<%= tr_class %>">
     <td class="span2"><%= link_to inbox.message.subject, inbox_show_path(inbox) %></td>
     <td><%= link_to strip_tags(inbox.message.content)[0..100] + '...', inbox_show_path(inbox) %></td>
-    <td class="span2"><%= time_ago_in_words(inbox.message.created_at) + '前' %></td>
+    <td class="span2"><%= inbox.message.created_at.localtime.strftime("%Y/%m/%d %H:%M") %></td>
   </tr>
   <% end %>
 </table>

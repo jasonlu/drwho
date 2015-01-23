@@ -1,7 +1,7 @@
 zh-TW:
   devise:
     confirmations:
-      confirmed: 您的帳號已經過確認，現在您已成功登入。
+      confirmed: 您的帳號已經過確認，現在您已可以正常登入。
       send_instructions: 您將在幾分鐘後收到一封電子郵件，內有確認帳號的步驟說明。
       send_paranoid_instructions: 如果此電子郵件信箱真存在於資料庫中的話，您將在幾分鐘後收到一封電子郵件， 說明確認帳號的手續。
     failure:
@@ -56,5 +56,5 @@ zh-TW:
       not_found: 沒有找到
       not_locked: 被鎖定了
       not_saved:
-        one: 有一個錯誤導致%{resource}不能被儲存：
-        other: 有 %{count} 個錯誤導致%{resource}不能被儲存：
+        one: 以下錯誤導致註冊失敗：
+        other: 以下錯誤導致註冊失敗：

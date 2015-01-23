@@ -64,7 +64,7 @@ class ApplicationController < ActionController::Base
 
   def generate_order_number
     session_id = cookies[:cart_id].blank? ? request.session_options[:id] : cookies[:cart_id]
-    order_number = Time.now.strftime("%Y%m%d%H%M%S") + session_id.to_i(16).to_s[0..2]
+    order_number = Time.now.strftime("%Y%m%d%H%M%S") + session_id.to_i.to_s[0..2]
   end
 
 end

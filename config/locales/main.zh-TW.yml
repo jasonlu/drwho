@@ -30,6 +30,8 @@ zh-TW:
       create: 新增%{model}
       submit: 儲存%{model}
       update: 更新%{model}
+  user_profile:
+    update_successed: 使用者資料已儲存
   number:
     currency:
       format:
