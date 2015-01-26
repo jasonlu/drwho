@@ -6,7 +6,8 @@ Drwho::Application.routes.draw do
   put "inbox/read/:id", :to => 'inbox#read', :as => :inbox_read
   #delete "inbox/delete/:id", :to => 'inbox#delete'
 
-  get "news/:title", :to => 'news#show', :as => :news_item
+  get "news/:id", :to => 'news#show', :as => :news_item
+  get "news/title/:title", :to => 'news#show_by_title', :as => :news_item
   get "news", :to => 'news#index', :as => :news_index
   get "my_account", :to => 'my_account#profile', :as => :my_account
   get "my_account/profile"
