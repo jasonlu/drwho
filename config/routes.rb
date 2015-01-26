@@ -7,7 +7,7 @@ Drwho::Application.routes.draw do
   #delete "inbox/delete/:id", :to => 'inbox#delete'
 
   get "news/:id", :to => 'news#show', :as => :news_item
-  get "news/title/:title", :to => 'news#show_by_title', :as => :news_item
+  get "news/title/:title", :to => 'news#show_by_title', :as => :news_item_by_title
   get "news", :to => 'news#index', :as => :news_index
   get "my_account", :to => 'my_account#profile', :as => :my_account
   get "my_account/profile"
