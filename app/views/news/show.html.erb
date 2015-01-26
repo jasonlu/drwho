@@ -5,4 +5,4 @@
 <p>
   <%= @news.content.html_safe %>
 </p>
-<p class="text-right text-info"><%= news.admin.try(:fullname) %></p>
+<p class="text-right text-info"><%= @news.admin.try(:fullname) %></p>
