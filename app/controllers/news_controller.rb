@@ -12,8 +12,8 @@ class NewsController < ApplicationController
   # GET /news/1
   # GET /news/1.json
   def show
-    @news = News.find_by_title(params[:title])
-
+    #@news = News.find_by_title(params[:title])
+    @news = News.find(params[:id])
     respond_to do |format|
       format.html # show.html.erb
       format.json { render json: @news }

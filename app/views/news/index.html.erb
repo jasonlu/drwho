@@ -5,12 +5,12 @@
 <% @news.each do  |news| %>
 
 <div class="page-header">
-  <h1><small><%=  link_to  news.title, news_item_path(news.title) %></small></h1>
+  <h1><small><%=  link_to  news.title, news_item_path(news.id) %></small></h1>
 </div>
 <p>
   <%= news.content.html_safe %>
 </p>
-<p class="text-right text-info">發佈於 <%= news.created_at.localtime().strftime("%Y/%m/%d %H:%M") %> <%= news.user.try(:fullname) %></p>
+<p class="text-right text-info">發佈於 <%= news.publish_at.localtime().strftime("%Y/%m/%d") %> <%= news.user.try(:fullname) %></p>
 <% end %>
 
 <%= paginate @news %>
